@@ -18,7 +18,8 @@ This paper can be viewed
 as an application and further refinement 
 of the Mappa Mundi (MM) algorithm.  
 In this case, we apply it to finding what
-are called Gene Regulatory Networks (GRN)
+are called Gene Regulatory Networks (GRN),
+autoregulon (AR) nets
 and Network Motifs 
 in the Genomics and Systems Biology literature (Ref.\cite{alon-book}).
 
@@ -44,13 +45,13 @@ concentrations of
 gene expressions and transcription factors.
 The DAGs we obtain are called GRN
 in the Genomics literature. GRN are a
-special case of autoregulon networks.
+special case of AR networks.
 
-Autoregulons Networks (AN) are 
+AR nets are 
 discussed in the chapter entitled \qt{Autoregulon Networks (Network Motifs)} of 
 my book Ref.\cite{Bayesuvius}.
 
-AN are a special case of Dynamical systems (DS). DS are discussed in the
+AR nets are a special case of Dynamical systems (DS). DS are discussed in the
 chapter entitled \qt{Dynamical Systems}
 of my book Ref.\cite{Bayesuvius}.
 
@@ -92,7 +93,7 @@ For this paper, each $q_i$ represents either a {\bf translation
 factor (TF)} concentration, or a {\bf gene expression (GE)} concentration.\footnote{The 
 terms \qt{translation factor}
 and \qt{gene expression} are both defined
-in the AN chapter of my free book Ref.\cite{Bayesuvius}}
+in the AR net chapter of my free book Ref.\cite{Bayesuvius}}
 
 
 Suppose $x$ annd $y$
@@ -114,7 +115,7 @@ $p_{acc}^*$: threshold value for
 $p_{acc}^\xi$
 
 The MM algorithm 
-for finding an AN 
+for finding an AR net
 from 2 TS records, consists of the following steps:
 \begin{enumerate}
 \item {\bf Compare 2 TS records
@@ -221,7 +222,7 @@ where this is done with variables. Do it with the values of those variables inst
 At first glance, 
 Eq.(\ref{eq-x-y-autos}) doesn't look like a DAG, because it has a cycle and DAGs are, by definition, acyclic. But
 Eq.(\ref{eq-x-y-autos}) does indeed represent a DAG because, as explained
-in the AN chapter of Ref.\cite{Bayesuvius},
+in the AR net chapter of Ref.\cite{Bayesuvius},
 Eq.(\ref{eq-x-y-autos})
 represents this net: 
 
@@ -233,17 +234,243 @@ represents this net:
 \dot{\rvx} & \dot{\rvy}
 }
 \eeq
-
-
 which is acyclic.
-
-
-
-
-
 \end{enumerate}
 
+If $R_1$ and $R_2$ are two TS records and 
+$G$ is the DAG obtained by
+following the MM algorithm presented above, then 
+one can represent that TS algorithm diagrammatically by
+
+\beq
+\xymatrix{
+R_1 \ar[dr]
+& R_2 \ar[d]
+\\
+&G
+}
+\eeq
+In the next section, we will try to define the merging of
+more than two records into a single DAG.
+
 \section{Comparing More Than 2 TS Records}
+
+\subsection{Merging two or more DAGs into one DAG}
+
+\begin{itemize}
+\item merging doubly overlapping arrows (overlap in head and tail)
+
+\beq
+\left.
+\begin{array}{l}
+\xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
+&\Rect{\rvy}
+\\
+\Rect{\rvx}\ar[r]^{p_1 (N_2)}
+&\Rect{\rvy}}
+\end{array}
+\right\}
+\implies
+\xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p (N)}&\Rect{\rvy}}
+\eeq
+where
+
+\beq
+N = N_1 + N_2
+\eeq
+and
+
+\beq 
+p= \frac{\sum_{i=1}^2 n_{acc, i}}
+{\sum_{i=1}^2(n_{acc, i}+ n_{rej, i})}=
+\frac{ p_1N_1 + p_2 N_2}{N_1 + N_2}= 
+p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
+\eeq
+
+\item merging singly overlapping arrows (overlap in head or tail but not both)
+
+\beq
+\begin{array}{lll}
+\left.
+\begin{array}{l}
+\xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
+&\Rect{\rvy}
+\\
+\Rect{\rvx}\ar[r]^{p_1 (N_2)}
+&\Rect{\rvz}}
+\end{array}
+\right\}
+&\implies&
+\xymatrix@C=5pc{
+&\Rect{\rvy}
+\\
+\Rect{\rvx}\ar[ru]^{p_1 (N_1)}
+\ar[r]_{p_2 (N_2)}
+&\Rect{\rvz}
+}
+\end{array}
+\eeq
+
+\beq
+\begin{array}{lll}
+\left.
+\begin{array}{l}
+\xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
+&\Rect{\rvy}
+\\
+\Rect{\rvz}\ar[r]^{p_1 (N_2)}
+&\Rect{\rvy}}
+\end{array}
+\right\}
+&\implies&
+\xymatrix@C=5pc{
+\Rect{\rvx}\ar[r]^{p_1 (N_1)}
+&\Rect{\rvy}
+\\
+\Rect{\rvz}\ar[ru]_{p_2 (N_2)}
+}
+\end{array}
+\eeq
+
+\item non-overlapping arrows
+
+\beq
+\begin{array}{lll}
+\left.
+\begin{array}{l}
+\xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
+&\Rect{\rvy}
+\\
+\Rect{\rva}\ar[r]^{p_1 (N_2)}
+&\Rect{\rvb}}
+\end{array}
+\right\}
+&\implies&
+\xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
+&\Rect{\rvy}
+\\
+\Rect{\rva}\ar[r]^{p_1 (N_2)}
+&\Rect{\rvb}}
+\end{array}
+\eeq
+
+
+\end{itemize}
+If $G_1$ and $G_2$ are two DAGs and 
+$G$ is the DAG obtained by
+following the DAG merging lgorithm presented above, then 
+one can represent that DAG merging algorithm diagrammatically by
+
+\beq
+\xymatrix{
+G_1 \ar[dr]
+&G_2 \ar[d]
+\\
+&G
+}
+\eeq
+
+\beq
+\xymatrix{
+G_1 \ar[drr]
+& G_2\ar[dr]
+& G_3 \ar[d]
+\\
+&&G
+}\quad =\quad
+\xymatrix{
+G_1\ar[dr]
+&G_2\ar[d]
+&G_3\ar[dd]
+\\
+&G_{1,2}\ar[dr]
+\\
+&&G
+}
+\eeq
+
+\beq
+\xymatrix{
+R_1\ar[drr]
+&R_2\ar[dr]
+&R_3\ar[d]
+\\
+&&G
+}
+=
+\xymatrix{
+R_1\ar[d]\ar[drr]
+&R_2\ar[dl]\ar[d]
+&R_3\ar[dl]\ar[d]
+\\
+G_{1,2}\ar[drr]
+&G_{2,3}\ar[dr]
+&G_{1,3}\ar[d]
+\\
+&&G
+}
+\eeq
+
+
+\beq
+\xymatrix{
+R_1\ar[dr]
+&R_2\ar[d]\ar[dr]
+&R_3\ar[d]\ar[dr]
+&R_4\ar[d]\ar[dr]
+&R_5\ar[d]
+\\
+&G_{1,2}\ar[d]
+&G_{2,3}\ar[d]
+&G_{3,4}\ar[d]
+&G_{4,5}\ar[d]
+\\
+&G_2\ar[r]
+&G_3\ar[r]
+&G_4\ar[r]
+&G_5
+}
+\eeq
+
+\beq
+\xymatrix{
+R_1\ar[drr]
+&R_2\ar[dr]\ar[drr]
+&R_3\ar[d]\ar[dr]\ar[drr]
+&R_4\ar[d]\ar[dr]
+&R_5\ar[d]
+\\
+&
+&G_{2,3}\ar[d]
+&G_{3,4}\ar[d]
+&G_{4,5}\ar[d]
+\\
+&
+&G_3\ar[r]
+&G_4\ar[r]
+&G_5
+}
+\eeq
+
+\beq
+\xymatrix{
+R_1\ar[drrrr]
+&R_2\ar[drrr]
+&R_3\ar[drr]
+&R_4\ar[dr]
+&R_5\ar[d]
+\\
+&
+&
+&
+&G_{4,5}\ar[d]
+\\
+&
+&
+&
+&G_5
+}
+\eeq
 
 \bibliographystyle{plain}
 \bibliography{references}
