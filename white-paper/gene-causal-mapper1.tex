@@ -11,13 +11,23 @@
 \maketitle
 \vskip2cm
 \section*{Abstract}
-
+This paper can be viewed
+as an application and further refinement 
+of the Mappa Mundi (MM) algorithm,
+an algorithm  for which software and a paper are available at github. 
+The MM algorithm can be used to extract
+causal DAGs from chronologically ordered data, either in text or tabular form. 
+In this paper, we apply it to finding what
+are called Gene Regulatory Networks (GRN),
+Autoregulon  Nets
+and Network Motifs 
+in the Genomics and Systems Biology literature.
 \section{Introduction}
 
 This paper can be viewed
 as an application and further refinement 
 of the Mappa Mundi (MM) algorithm.  
-In this case, we apply it to finding what
+In this paper, we apply it to finding what
 are called Gene Regulatory Networks (GRN),
 autoregulon (AR) nets
 and Network Motifs 
@@ -36,7 +46,7 @@ in chronological order. So it will work with time stamped lab
 notebooks or medical records, 
 but it won't work with textbooks or fiction with  time travel or flashback shenanigans.
 
-After Ref.\cite{mappa-mundi}, the MM algorithm was later applied in Ref.\cite{causal-fitbit} to extracting causal DAGs from FitBit times
+After Ref.\cite{mappa-mundi}, the MM algorithm was applied in Ref.\cite{causal-fitbit} to extracting causal DAGs from FitBit times
 series data.
 
 In this paper, we use the MM algorithm
@@ -70,7 +80,7 @@ TS records 1 and 2.}
 We will use the term {\bf time series (TS) record}
 to refer to
 a data file such as a spreadsheet with the first column 
-giving time increasing downwards and additional column giving the values
+giving time increasing downwards and additional columns giving the values
 of $q_i$ (a state variable) and $\dot{q}_i$ (time derivative of $q_i$) for $i=1, 2, \ldots N$
 at the time indicated by the first column.
 Any $q_i$ or $\dot{q}_i$ is called a {\bf state variable}.
@@ -99,7 +109,8 @@ in the AR net chapter of my free book Ref.\cite{Bayesuvius}}
 Suppose $x$ annd $y$
 are any two $q_i$. For $\xi \in\{x\rarrow y, y\rarrow x\}$, let
 
-$n_{acc}^{\xi}$: number of arrows , initially zero
+$n_{acc}^{\xi}$: number of arrows 
+accepted, initially zero
 
 $n_{rej}^{\xi}$: number of arrows rejected, initially zero
 
@@ -134,7 +145,7 @@ At the very least,
 one must store
 (unless they are  the default value zero) the current values
  of $n_{acc}^\xi$ and $n_{rec}^\xi$ 
-for $\xi \in\{x\rarrow y, y\rarrow x\}=\cala$, where $x$ and $y$ are any two $q_i$. 
+for $\xi \in\{x\rarrow y, y\rarrow x\}=\cala_{xy}$, where $x$ and $y$ are any two $q_i$. 
 
 
 \begin{itemize}
@@ -216,7 +227,7 @@ are true.
 When drawing an arrow, put 
 the values $p_{acc}^\xi$ and
 $N^\xi$ over the arrow, where 
-$\xi\in\cala$. See Eq.(\ref{eq-x-y-autos})
+$\xi\in\cala_{xy}$. See Eq.(\ref{eq-x-y-autos})
 where this is done with variables. Do it with the values of those variables instead.
 
 At first glance, 
@@ -256,6 +267,10 @@ more than two records into a single DAG.
 \section{Comparing More Than 2 TS Records}
 
 \subsection{Merging two or more DAGs into one DAG}
+Suppose we have two $G_1$ and $G_2$
+are two DAGs that we which to merge.
+Let $\cala_i$ be the set of arrows of DAG $G_i$
+for $i=1,2$.
 
 \begin{itemize}
 \item merging doubly overlapping arrows (overlap in head and tail)
@@ -264,10 +279,10 @@ more than two records into a single DAG.
 \left.
 \begin{array}{l}
 \xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
-&\Rect{\rvy}
+&\Rect{\rvy}&\in\cala_1
 \\
-\Rect{\rvx}\ar[r]^{p_1 (N_2)}
-&\Rect{\rvy}}
+\Rect{\rvx}\ar[r]^{p_2 (N_2)}
+&\Rect{\rvy}&\in\cala_2}
 \end{array}
 \right\}
 \implies
@@ -294,10 +309,10 @@ p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
 \left.
 \begin{array}{l}
 \xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
-&\Rect{\rvy}
+&\Rect{\rvy}&\in\cala_1
 \\
-\Rect{\rvx}\ar[r]^{p_1 (N_2)}
-&\Rect{\rvz}}
+\Rect{\rvx}\ar[r]^{p_2 (N_2)}
+&\Rect{\rvz}&\in\cala_2}
 \end{array}
 \right\}
 &\implies&
@@ -316,10 +331,10 @@ p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
 \left.
 \begin{array}{l}
 \xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
-&\Rect{\rvy}
+&\Rect{\rvy}&\in \cala_1
 \\
-\Rect{\rvz}\ar[r]^{p_1 (N_2)}
-&\Rect{\rvy}}
+\Rect{\rvz}\ar[r]^{p_2 (N_2)}
+&\Rect{\rvy} &\in \cala_2}
 \end{array}
 \right\}
 &\implies&
@@ -339,17 +354,17 @@ p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
 \left.
 \begin{array}{l}
 \xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
-&\Rect{\rvy}
+&\Rect{\rvy}&\in \cala_1
 \\
-\Rect{\rva}\ar[r]^{p_1 (N_2)}
-&\Rect{\rvb}}
+\Rect{\rva}\ar[r]^{p_2 (N_2)}
+&\Rect{\rvb}&\in \cala_2}
 \end{array}
 \right\}
 &\implies&
 \xymatrix@C=5pc{\Rect{\rvx}\ar[r]^{p_1 (N_1)}
 &\Rect{\rvy}
 \\
-\Rect{\rva}\ar[r]^{p_1 (N_2)}
+\Rect{\rva}\ar[r]^{p_2 (N_2)}
 &\Rect{\rvb}}
 \end{array}
 \eeq
@@ -358,7 +373,7 @@ p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
 \end{itemize}
 If $G_1$ and $G_2$ are two DAGs and 
 $G$ is the DAG obtained by
-following the DAG merging lgorithm presented above, then 
+following the DAG merging algorithm presented above, then 
 one can represent that DAG merging algorithm diagrammatically by
 
 \beq
@@ -368,7 +383,15 @@ G_1 \ar[dr]
 \\
 &G
 }
+\label{eq-merge2-dags}
 \eeq
+Once one defines the meaning of 
+DAG Eq.(\ref{eq-merge2-dags}), 
+one can use it as a building block
+to define the merging of more than 2 
+DAGs into a single DAG. For example,
+we can define the merging of 3 DAGs as 
+follows
 
 \beq
 \xymatrix{
@@ -387,7 +410,19 @@ G_1\ar[dr]
 \\
 &&G
 }
+\label{eq-merge-3-dags}
 \eeq
+
+\subsection{
+Extracting single DAG from more than 2 TS records}
+
+Once we define 
+by Eq.(\ref{eq-merge-3-dags})
+the merging
+of 3 DAGs into a
+single DAG,
+one can define the 
+extraction of a single DAG from 3 TS records, as follows.
 
 \beq
 \xymatrix{
@@ -409,8 +444,45 @@ G_{1,2}\ar[drr]
 \\
 &&G
 }
+\label{eq-3Recs-to-G}
 \eeq
+Suppose  we have $N$ records $R_1, R_2, \ldots,R_N$. Eq.(\ref{eq-3Recs-to-G})
+can be generalized to define
+\beq
+\xymatrix{
+R_1\ar[drrrr]
+&R_2\ar[drrr]
+&R_3\ar[drr]
+&\ldots
+&R_N\ar[d]
+\\
+&&&&G}
+\label{eq-NRecs-to-G}
+\eeq
+The generalization 
+extracts a DAG from every pair of 
+records $\{R_i, R_j\}$ were $1\leq i< j\leq N$ and merges all the  
+extracted DAGs into a single one.
 
+Eqs. (\ref{eq-3Recs-to-G})
+and (\ref{eq-NRecs-to-G})
+involve the comparison of $N\choose 2$
+record pairs. For large $N$,
+performing that many record comparisons
+is untenable.
+So we need a less laborious
+algorithm (even if less informative too) for extracting
+a single DAG from $N$  records.
+
+One family of such extraction algorithms
+is the following. Order the records $R_i$
+so that $i$ denotes the time at
+which  they 
+are presented to us. If $R_i$ is the
+current record,
+one can extract a DAG from $R_i$ 
+and the previous record $R_{i-1}$ as 
+follows
 
 \beq
 \xymatrix{
@@ -431,6 +503,11 @@ R_1\ar[dr]
 &G_5
 }
 \eeq
+Alternatively, if one
+is willing to do more work,
+one can extract a DAG from 
+$R_i$ and the previous 2 records 
+$R_{i-1}$ and $R_{i-2}$, as follows
 
 \beq
 \xymatrix{
@@ -451,6 +528,11 @@ R_1\ar[drr]
 &G_5
 }
 \eeq
+And so on. If  we assume
+perfect memory of all
+past records, then we get the following,
+which is the same as 
+Eq.(\ref{eq-NRecs-to-G}).
 
 \beq
 \xymatrix{
