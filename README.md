@@ -18,3 +18,4 @@ I discuss the gcmap algorithm
 in this white paper: 
 * [Version 1](https://github.com/rrtucci/gene_causal_mapper/blob/master/white-paper/gene-causal-mapper1.pdf)  
 
+![](pics/cell-to-dna.png)
