@@ -4,7 +4,7 @@
 
 
 \begin{document}
-\title{Discoring a Causal DAG for genes via Mappa Mundi algorithm}
+\title{Discovering a Causal DAG for genes \\ via the Mappa Mundi algorithm}
 \date{ \today}
 \author{Robert R. Tucci\\
         tucci@ar-tiste.com}
@@ -16,7 +16,7 @@ as an application and further refinement
 of the Mappa Mundi (MM) algorithm,
 an algorithm  for which software and a paper are available at github. 
 The MM algorithm can be used to extract
-causal DAGs from chronologically ordered data that is imputed either in text or tabular form. 
+causal DAGs from chronologically ordered data that is either in sentences text or tabular numeric form. 
 In this paper, we 
 describe how to apply it to finding what
 are called Gene Regulatory Networks (GRN),
@@ -58,11 +58,9 @@ gene expressions and transcription factors.
 The DAGs we obtain are called GRN
 in the Genomics literature. GRN are a
 special case of AR networks.
-
 AR nets are 
 discussed in the chapter entitled \qt{Autoregulon Networks (Network Motifs)} of 
 my book Ref.\cite{Bayesuvius}.
-
 AR nets are a special case of Dynamical systems (DS). DS are discussed in the
 chapter entitled \qt{Dynamical Systems}
 of my book Ref.\cite{Bayesuvius}.
@@ -87,7 +85,7 @@ of $q_i$ (a state variable) and $\dot{q}_i$ (time derivative of $q_i$) for $i=1,
 at the time indicated by the first column.
 Any $q_i$ or $\dot{q}_i$ is called a {\bf state variable}.
 The multidimensional space $(q_i)_{i=0}^{N}$
-is called {\bf configuration space}
+is called {\bf configuration space}.
 The multidimensional space $(q_i, \dot{q}_i)_{i=0}^{N}$
 is called {\bf phase space}.
 A two dimensional space $(q_i, \dot{q}_i)$ for any 
@@ -98,16 +96,16 @@ for time and columns for configuration space,
 if the change in time between rows is small. 
 In that case we can subtract two consecutive
 $q_i$ readings and divide by the difference
-in times to obtain the $\dot{q}_i$ columns.
+in time to obtain the $\dot{q}_i$ columns.
 
 In this paper, each $q_i$ represents either a {\bf translation
 factor (TF)} concentration, or a {\bf gene expression (GE)} concentration.\footnote{The 
 terms \qt{translation factor}
 and \qt{gene expression} are both defined
-in the AR net chapter of my free book Ref.\cite{Bayesuvius}}
+in the AR networks chapter of my free book Ref.\cite{Bayesuvius}}
 
 
-Suppose $x$ annd $y$
+Suppose $x$ and $y$
 are any two $q_i$. For $\xi \in
 \cala_{xy}=
 \{x\rarrow y, y\rarrow x\}$, let
@@ -137,8 +135,8 @@ and score arrows}
 
 
 Consider Fig.\ref{fig-two-phase-plane-bridges}.
-In that figure, suppose the two ends of bridge $a$ are equal: $\calx_1(t_a)\approx \calx_2(t_a')$ and
-the two ends of bridge $b$ are equal too:
+In that figure, suppose the two ends of bridge $a$ are approximately equal: $\calx_1(t_a)\approx \calx_2(t_a')$ and
+the two ends of bridge $b$ are approximately equal too:
 $\caly_1(t_b)\approx \caly_2(t_b')$. \footnote{By $\calx\approx \caly$ we mean that both of these vectors are inside the same small bin or open ball
 of size given by a pre-specified precision.}
 
@@ -273,6 +271,23 @@ are two DAGs that we wish to merge.
 Let $\cala_i$ be the set of arrows of DAG $G_i$
 for $i=1,2$.
 
+An autoregulon $\boxed{\rvx}$
+in a DAG $G$
+stores as \qt{cargo} an ordered set\\
+$\XX = [\calx(t_1), \calx(t_2),
+\calx(t_3),  \ldots]$ where
+ $t_1<t_2 < t_3 <\ldots$.
+An autoregulon $\boxed{\rvx_1}$ in DAG $G_1$
+is equal to an autoregulon $\boxed{\rvx_2}$ in DAG $G_2$
+if $\XX_1$ and $\XX_2$ have at least one
+$\calx(t_i)$ in common.
+
+If AR nodes $\boxed{\rvx_1}$
+and $\boxed{\rvx_2}$ are merged,
+the merged node should store
+both $\XX_1$ and $\XX_2$.
+
+
 \begin{itemize}
 \item merging doubly overlapping arrows (overlap in head and tail)
 
@@ -348,7 +363,7 @@ p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
 \end{array}
 \eeq
 
-\item non-overlapping arrows
+\item merging non-overlapping arrows
 
 \beq
 \begin{array}{lll}
