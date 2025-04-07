@@ -27,7 +27,7 @@ in the Genomics and Systems Biology literature.
 
 This paper can be viewed
 as an application and further refinement 
-of the Mappa Mundi (MM) algorithm.  
+of the Mappa Mundi (MM) algorithm given in Ref.\cite{mappa-mundi}.  
 In this paper, we 
 describe how to apply it to finding what
 are called Gene Regulatory Networks (GRN),
@@ -55,27 +55,17 @@ In this paper, we use the MM algorithm
 to extract DAGs from time series data for
 concentrations of
 gene expressions and transcription factors.
-The DAGs we obtain are called GRN
-in the Genomics literature. GRN are a
-special case of AR networks.
-AR nets are 
+The DAGs we obtain are called GRN.\footnote{GRN are discussed in the chapter entitled \qt{Gene Regulatory Networks} of my free book Ref.\cite{Bayesuvius}.} GRN are a
+special case of AR networks.\footnote{AR nets are 
 discussed in the chapter entitled \qt{Autoregulon Networks (Network Motifs)} of 
-my book Ref.\cite{Bayesuvius}.
-AR nets are a special case of Dynamical systems (DS). DS are discussed in the
+my free book Ref.\cite{Bayesuvius}.}
+AR nets are a special case of Dynamical systems (DS).\footnote{DS are discussed in the
 chapter entitled \qt{Dynamical Systems}
-of my book Ref.\cite{Bayesuvius}.
+of my free book Ref.\cite{Bayesuvius}.}
 
 
 \section{Comparing 2 TS Records}
-\begin{figure}[h!]
-\centering
-\includegraphics[width=5in]
-{two-phase-plane-bridges.png}
-\caption{Causal bridges $a$ and $b$ spanning
-	phase planes for
-TS records 1 and 2.}
-\label{fig-two-phase-plane-bridges}
-\end{figure}
+
 
 We will use the term {\bf time series (TS) record}
 to refer to
@@ -133,6 +123,28 @@ from 2 TS records, consists of the following steps:
 \item {\bf Compare 2 TS records
 and score arrows}
 
+\begin{figure}[h!]
+\centering
+\includegraphics[width=5in]
+{two-phase-plane-bridges.png}
+\caption{Causal bridges $a$ and $b$ spanning
+	phase planes for
+TS records $R_1$ and $R_2$.}
+\label{fig-two-phase-plane-bridges}
+\end{figure}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=6in]
+{two-dataframes.png}
+\caption{TS Records $R_1$ and $R_2$ portrayed
+as dataframes instead of phase planes
+as in Fig.\ref{fig-two-phase-plane-bridges}.
+In case  $(i)$, causal bridges are 
+parallel, whereas in case $(ii)$, they 
+cross. X might be a TF instead of a gene.
+Ditto for Y.}
+\label{fig-two-dataframes}
+\end{figure}
 
 Consider Fig.\ref{fig-two-phase-plane-bridges}.
 In that figure, suppose the two ends of bridge $a$ are approximately equal: $\calx_1(t_a)\approx \calx_2(t_a')$ and
@@ -149,7 +161,9 @@ for $\xi \in\cala_{xy}$, where $x$ and $y$ are any two $q_i$.
 
 \begin{itemize}
 
-\item if $t_a<t_b$ and $t_a'<t_b'$ (bridges are parallel in time)\footnote{$x++$ means add 1 to $x$}
+\item Suppose  $t_a<t_b$ and $t_a'<t_b'$. Hence, bridges are parallel in time
+as in Fig.\ref{fig-two-dataframes} $(i)$.
+Then\footnote{$x++$ means add 1 to $x$} 
 
 \beq
 \left\{
@@ -157,11 +171,15 @@ for $\xi \in\cala_{xy}$, where $x$ and $y$ are any two $q_i$.
 n_{acc}^{x\rarrow y}++
 \\
 N^{x\rarrow y}++
+\\
+	\text{Add $(t_a, \calx(t_a))$ to a set $\XX(R_1, R_2)$.} 
+	\\
+	\text{Add $(t_b, \caly(t_b))$ to a set $\YY(R_1, R_2)$.}  
 \end{array}
 \right.
 \eeq
 
-\item if $t_a>t_b$ and $t_a'>t_b'$ (bridges are parallel in time)
+\item Suppose  $t_a>t_b$ and $t_a'>t_b'$. Hence, bridges are parallel in time. Then
 
 \beq
 \left\{
@@ -169,11 +187,15 @@ N^{x\rarrow y}++
 	n_{acc}^{y\rarrow x}++
 	\\
 	N^{y\rarrow x}++
+	\\
+	\text{Add $(t_a, \calx(t_a))$ to a set $\XX(R_1, R_2)$.} 
+	\\
+	\text{Add $(t_b, \caly(t_b))$ to a set $\YY(R_1, R_2)$.}  
 \end{array}
 \right.
 \eeq
 
-\item if $t_a<t_b$ and $t_a'>t_b'$ (bridges are crossing in time)
+\item Suppose  $t_a<t_b$ and $t_a'>t_b'$. Hence, bridges cross in time as in Fig.\ref{fig-two-dataframes} $(ii)$. Then
 
 \beq
 \left\{
@@ -185,7 +207,7 @@ N^{x\rarrow y}++
 \right.
 \eeq
 
-\item if $t_a>t_b$ and $t_a'<t_b'$ (bridges are crossing in time)
+\item Suppose  $t_a>t_b$ and $t_a'<t_b'$. Hence, bridges cross in time. Then
 
 \beq
 \left\{
@@ -198,7 +220,7 @@ N^{x\rarrow y}++
 \eeq
 \end {itemize}
 
-\item {\bf Draw DAG}
+\item {\bf Draw AR net}
 
 \beq
 \xymatrix@C=10pc{
@@ -210,7 +232,7 @@ N^{x\rarrow y}++
 \eeq
 If $x$ and $y$ are any two
 $q_i$, draw an arrow from autoregulon $\boxed{\rvx}$
-to autoregulon $\boxed{\rvx}$
+to autoregulon $\boxed{\rvy}$
 iff both $p_{acc}^{x\rarrow y}>p^*$
 and $N^{x\rarrow y}> N^*$
 are true.
@@ -248,9 +270,9 @@ which is acyclic.
 \end{enumerate}
 
 If $R_1$ and $R_2$ are two TS records and 
-$G$ is the DAG obtained by
+$G$ is the {\bf AR net} obtained by
 following the MM algorithm presented above, then 
-one can represent that TS algorithm diagrammatically by
+one can represent that MM algorithm diagrammatically by the {\bf meta net} 
 
 \beq
 \xymatrix{
@@ -261,31 +283,27 @@ R_1 \ar[dr]
 }
 \eeq
 In the next section, we will try to define the merging of
-more than two records into a single DAG.
+more than two records into a single AR net.
 
 \section{Comparing More Than 2 TS Records}
 
-\subsection{Merging two or more DAGs into one DAG}
+\subsection{Merging two or more AR nets into one AR net}
 Suppose $G_1$ and $G_2$
-are two DAGs that we wish to merge.
-Let $\cala_i$ be the set of arrows of DAG $G_i$
+are two AR nets that we wish to merge.
+Let $\cala_i$ be the set of arrows of AR net $G_i$
 for $i=1,2$.
 
-An autoregulon $\boxed{\rvx}$
-in a DAG $G$
-stores as \qt{cargo} an ordered set\\
-$\XX = [\calx(t_1), \calx(t_2),
-\calx(t_3),  \ldots]$ where
- $t_1<t_2 < t_3 <\ldots$.
-An autoregulon $\boxed{\rvx_1}$ in DAG $G_1$
-is equal to an autoregulon $\boxed{\rvx_2}$ in DAG $G_2$
-if $\XX_1$ and $\XX_2$ have at least one
-$\calx(t_i)$ in common.
-
-If AR nodes $\boxed{\rvx_1}$
-and $\boxed{\rvx_2}$ are merged,
+Any autoregulon $\boxed{\rvx}$
+in an AR net $G$
+stores as \qt{cargo} a collection $\XX$ 
+of sets
+$\XX(R_1, R_2)$ which are of the form $\{(t_1, \calx(t_1)), (t_2, \calx(t_2)),
+(t_3, \calx(t_3)), \ldots\}$.
+ 
+If AR nodes $\boxed{\rvx}$
+and $\boxed{\rvx'}$ are merged,
 the merged node should store
-both $\XX_1$ and $\XX_2$.
+both $\XX$ and $\XX'$.
 
 
 \begin{itemize}
@@ -387,10 +405,10 @@ p_1 \frac{N_1}{N} + p_2 \frac{N_2}{N}
 
 
 \end{itemize}
-If $G_1$ and $G_2$ are two DAGs and 
-$G$ is the DAG obtained by
-following the DAG merging algorithm presented above, then 
-one can represent that DAG merging algorithm diagrammatically by
+If $G_1$ and $G_2$ are two AR nets and 
+$G$ is the AR net obtained by
+following the AR net merging algorithm presented above, then 
+one can represent that AR net merging algorithm diagrammatically by
 
 \beq
 \xymatrix{
@@ -401,13 +419,13 @@ G_1 \ar[dr]
 }
 \label{eq-merge2-dags}
 \eeq
-Once one defines the meaning of 
+Once one defines the meaning of meta net
 Eq.(\ref{eq-merge2-dags}), 
 one can use it as a building block
 to define the merging of more than 2 
-DAGs into a single DAG. For example,
-we can define the merging of 3 DAGs as 
-follows
+AR nets into a single AR net. For example,
+we can define the merging of 3 AR nets 
+by the meta net
 
 \beq
 \xymatrix{
@@ -429,15 +447,15 @@ G_1\ar[dr]
 \eeq
 
 \subsection{
-Extracting single DAG from more than 2 TS records}
+Extracting single AR net from more than 2 TS records}
 
 Once we define 
 by Eq.(\ref{eq-merge-3-dags})
 the merging
-of 3 DAGs into a
-single DAG,
+of 3 AR nets into a
+single AR net,
 one can define the 
-extraction of a single DAG from 3 TS records, as follows.
+extraction of a single AR net from 3 TS records, as follows.
 
 \beq
 \xymatrix{
@@ -475,9 +493,9 @@ R_1\ar[drrrr]
 \label{eq-NRecs-to-G}
 \eeq
 The generalization 
-extracts a DAG from every pair of 
+extracts an AR net from every pair of 
 records $\{R_i, R_j\}$ where $1\leq i< j\leq N$, and merges all the  
-extracted DAGs into a single one.
+extracted AR nets into a single one.
 
 Eqs. (\ref{eq-3Recs-to-G})
 and (\ref{eq-NRecs-to-G})
@@ -487,7 +505,7 @@ performing that many record comparisons
 is untenable.
 So we need a less laborious
 algorithm (even if less informative too) for extracting
-a single DAG from $N$  records.
+a single AR net from $N$  records.
 
 One family of such extraction algorithms
 is the following. Order the records $R_i$
@@ -495,7 +513,7 @@ so that $i$ denotes the time at
 which  they 
 are presented to us. If $R_i$ is the
 current record,
-one can extract a DAG from $R_i$ 
+one can extract an AR net from $R_i$ 
 and the previous record $R_{i-1}$ as 
 follows
 
@@ -520,7 +538,7 @@ R_1\ar[dr]
 \eeq
 Alternatively, if one
 is willing to do more work,
-one can extract a DAG from 
+one can extract an AR net from 
 $R_i$ and the previous 2 records 
 $R_{i-1}$ and $R_{i-2}$, as follows
 
