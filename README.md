@@ -19,4 +19,4 @@ in this white paper:
 * Version 1.0 (March 16, 2025) Superceded by Version 1.1
 * [Version 1.1](https://github.com/rrtucci/gene_causal_mapper/blob/master/white-paper/gene-causal-mapper1.pdf)  
 
-![](pics/cell-to-dna.png)
+![](pics/cell-to-dna.png) April 27, 2025
