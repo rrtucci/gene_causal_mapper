@@ -5,7 +5,7 @@ Welcome to Gene_Causal_Mapper (gcmap)!
 This repo will soon contain software 
 called Gene_Causal_Mapper (or gcmap for short) 
 for
-discovering a causal DAG for genes via
+discovering a causal Dag for genes via
 the Mappa Mundi (MM) algorithm.
 The software applies the MM algorithm 
 to finding what
