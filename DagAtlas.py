@@ -1,5 +1,4 @@
 from turtledemo.penrose import start
-from base_classes import *
 from Dag import *
 from TS_Record import *
 import copy as cp

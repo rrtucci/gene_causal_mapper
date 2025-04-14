@@ -1,4 +1,5 @@
-from base_classes import *
+from Node import *
+from Arrow import *
 
 class Dag:
     def __init__(self, arrows=None, nodes=None):

@@ -1,4 +1,5 @@
-from base_classes import *
+from Point import *
+from Bridge import *
 from itertools import product
 import pandas as pd
 
