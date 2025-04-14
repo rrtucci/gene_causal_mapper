@@ -1,5 +1,6 @@
 import copy as cp
 
+
 class Arrow:
 
     def __init__(self, start_g, end_g):
@@ -32,11 +33,11 @@ class Arrow:
         return self.num_acc + self.num_rej
 
     def get_prob_acc(self):
-        return self.num_acc/self.get_num_trials()
+        return self.num_acc / self.get_num_trials()
 
-    def above_threshold(self, th_prob_acc, th_num_trials):
-        if self.get_prob_acc() > th_prob_acc and \
-            self.get_num_trials() > th_num_trials:
+    def above_thresholds(self, prob_acc_th, num_trials_th):
+        if self.get_prob_acc() > prob_acc_th and \
+                self.get_num_trials() > num_trials_th:
             return True
         else:
             return False

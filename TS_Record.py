@@ -5,10 +5,10 @@ import pandas as pd
 
 
 class TS_Record:
-    def __init__(self, name, times):
+    def __init__(self, name, times=TIMES):
         self.name = name
         self.times = times
-        self.gene_to_points =  None
+        self.gene_to_points = None
 
     def check_self(self):
         assert self.gene_to_points
@@ -17,28 +17,29 @@ class TS_Record:
 
     def read_file(self, in_path, g_range=None):
         df = pd.read_csv(in_path, sep='\t', header=None)
-        if g_range is not None:
-            g_range = range(g_range[0], g_range[1])
-        else:
+        if g_range is None:
             g_range = range(len(df.len))
-        for g_num in g_range:
-            self.gene_to_points[df.iloc[g_num, 2]] = df.iloc[g_num, 0:8]
-        self.check_self()
+        else:
+            g_range = range(g_range[0], g_range[1])
 
+        for g_num in g_range:
+            self.gene_to_points[df.iloc[g_num, 0]] =\
+                df.iloc[g_num, 1:9]
+        self.check_self()
 
     @staticmethod
     def get_gene_to_bridges(rec1, rec2):
         assert len(rec1.gene_to_points) == len(rec2.gene_to_points)
         gene_to_bridges = {}
         for g in rec1.gene_to_points.keys():
-            gene_to_bridges[g] = []
-            for i1, i2 in product(range(len(rec1.times)),
-                                  range(len(rec2.times))):
-                t1 = rec1.times[i1]
-                t2 = rec2.times[i2]
-                pt1 = rec1.gene_to_points[g][i1]
-                pt2 = rec1.gene_to_points[g][i2]
-                if Point.are_sim(pt1, pt2):
-                    bridge = Bridge(t1, pt1, t2, pt2)
-                    gene_to_bridges[g].append(bridge)
+            if g in rec2.gene_to_points.keys():
+                for i1, i2 in product(range(len(rec1.times)),
+                                      range(len(rec2.times))):
+                    t1 = rec1.times[i1]
+                    t2 = rec2.times[i2]
+                    pt1 = rec1.gene_to_points[g][i1]
+                    pt2 = rec1.gene_to_points[g][i2]
+                    if Point.are_sim(pt1, pt2):
+                        bridge = Bridge(t1, pt1, t2, pt2)
+                        gene_to_bridges.setdefault(g, []).append(bridge)
         return gene_to_bridges

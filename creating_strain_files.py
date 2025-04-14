@@ -3,7 +3,7 @@ import numpy as np
 from globals import *
 
 
-def create_strain_files(in_path, out_dir):
+def create_strain_files(in_path, out_dir, del_PREDICT=True):
     """
     Reads DREAM3 TSV file and writes a separate TSV file for each of the 4
     strains
@@ -16,7 +16,7 @@ def create_strain_files(in_path, out_dir):
         end_col = start_col + 8
         df1 = df.iloc[:, np.r_[1:2, start_col:end_col]]
         df1 = df1.dropna(subset=[df1.columns[0]])
-        if STRAINS[strain_num] == "gat1_d":
+        if STRAINS[strain_num] == "gat1_d" and del_PREDICT:
             df1 = df1[
                 ~df1.apply(lambda row: row.astype(str).str.contains(
                     "PREDICT")).any(axis=1)]

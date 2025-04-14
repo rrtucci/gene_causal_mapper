@@ -1,6 +1,7 @@
 from Node import *
 from Arrow import *
 
+
 class Dag:
     def __init__(self, arrows=None, nodes=None):
         if not arrows:
@@ -29,7 +30,7 @@ class Dag:
                 updated = True
                 break
         if not updated:
-            ar1 =Arrow(start_g, end_g)
+            ar1 = Arrow(start_g, end_g)
             self.arrows.append(ar1)
             if accept:
                 ar1.accept()
@@ -44,10 +45,8 @@ class Dag:
             if gene == nd.gene:
                 nd1 = nd
                 break
-        if not nd1:
+        if nd1 is None:
             nd1 = Node(gene)
-        if name not in nd1.comparison_to_bridges.keys():
-            nd1.comparison_to_bridges[name] = []
         if acc_bridge is not None:
-            nd1.comparison_to_bridges[name].append(acc_bridge)
-
+            (nd1.comp_label_to_bridges.
+                setdefault(name, []).append(acc_bridge))
