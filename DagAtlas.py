@@ -51,19 +51,17 @@ class DagAtlas:
         dag = cp.deepcopy(dag1)
         for node2 in dag2.nodes:
             nd = dag.node_with_this_gene(node2.gene)
-            if not nd:
-                dag.nodes.append(cp.deepcopy(node2))
-            else:
+            if nd:
                 nd = Node.merge_two_nodes(nd, node2)
-        for ar in dag.arrows:
-            ar2 = Arrow.find_arrow(dag2.arrows,
-                                   ar.start_g,
-                                   ar.end_g)
-            if ar2:
-                ar = Arrow.merge_two_arrows(ar, ar2)
+            else:
+                dag.nodes.append(cp.deepcopy(node2))
+
         for ar2 in dag2.arrows:
-            if not Arrow.find_arrow(dag.arrows,
-                                   ar2.start_g,
-                                   ar2.end_g):
+            ar = Arrow.find_arrow(dag.arrows,
+                                  ar2.start_g,
+                                  ar2.end_g)
+            if ar:
+                ar = Arrow.merge_two_arrows(ar, ar2)
+            else:
                 dag.arrows.append(ar2)
         return dag
