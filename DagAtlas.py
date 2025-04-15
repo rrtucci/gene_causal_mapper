@@ -3,12 +3,19 @@ from Dag import *
 from TS_Record import *
 import copy as cp
 
+
 class DagAtlas:
     def __init__(self, cum_dag):
         self.cum_dag = cum_dag
 
     @staticmethod
-    def extract_dag_from_two_recs(rec1, rec2):
+    def extract_dag_from_two_recs(rec_name1, rec_name2):
+        rec1 = TS_Record(rec_name1)
+        rec2 = TS_Record(rec_name2)
+
+        rec1.read_file(f"data/{rec_name1}.tsv")
+        rec2.read_file(f"data/{rec_name2}.tsv")
+
         dag = Dag()
         gene_to_bridges = TS_Record.get_gene_to_bridges(rec1, rec2)
         genes = gene_to_bridges.keys()
@@ -64,3 +71,28 @@ class DagAtlas:
             else:
                 dag.arrows.append(ar2)
         return dag
+
+    @staticmethod
+    def extract_dag_from_n_recs_mem1(rec_names):
+        num_recs = len(rec_names)
+        dags = []
+        for i in range(1, num_recs):
+            dag = DagAtlas.extract_dag_from_two_recs(rec_names[i - 1],
+                                                     rec_names[i])
+            dags.append(dag)
+        for j in range(1, num_recs - 2):
+            new_dags = []
+            for i in range(1, num_recs - j):
+                dag = DagAtlas.merge_two_dags_into_one(dags[i - 1],
+                                                       dags[i])
+                new_dags.append(dag)
+            dags, new_dags = new_dags, dags
+        return dags[0]
+
+
+if __name__ == "__main__":
+    def main():
+        dag = DagAtlas.extract_dag_from_n_recs_mem1(STRAINS)
+        dag.draw(prob_acc_thold=.5,
+                 num_trials_thold=10,
+                 jupyter=False)

@@ -35,9 +35,11 @@ class Arrow:
     def get_prob_acc(self):
         return self.num_acc / self.get_num_trials()
 
-    def above_thresholds(self, prob_acc_th, num_trials_th):
-        if self.get_prob_acc() > prob_acc_th and \
-                self.get_num_trials() > num_trials_th:
+    def above_thresholds(self,
+                         prob_acc_thold,
+                         num_trials_thold):
+        if self.get_prob_acc() > prob_acc_thold and \
+                self.get_num_trials() > num_trials_thold:
             return True
         else:
             return False
