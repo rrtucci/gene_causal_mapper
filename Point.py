@@ -6,6 +6,9 @@ class Point:
         self.x = x
         self.xdot = xdot
 
+    def ___str___(self):
+        return f"(x={self.x:{1}.{3}}, xdot={self.xdot:{1}.{3}})"
+
     @staticmethod
     def are_sim(pt1, pt2):
         if (abs(pt1.x - pt2.x) < X_RAD and

@@ -5,9 +5,22 @@ import graphviz as gv
 from IPython.display import display, Image
 from PIL.Image import open as open_image
 
+import pickle as pik
+
 
 class Dag:
-    def __init__(self, arrows=None, nodes=None, title=None):
+    def __init__(self,
+                 arrows=None,
+                 nodes=None,
+                 title=None,
+                 pik_in_path=None):
+        if pik_in_path:
+            with open(pik_in_path, "rb") as f:
+                dag = pik.load(f)
+                self.arrows = dag.arrows
+                self.nodes = dag.nodes
+                self.title = dag.title
+            return
         if not arrows:
             self.arrows = []
         else:
@@ -22,6 +35,24 @@ class Dag:
             self.title = ""
         else:
             self.title = title
+
+    def save_self(self, dag_dir):
+        """
+        This method stores self as a pickled file.
+
+        Parameters
+        ----------
+        dag_dir: str
+            Directory in which pickled file is stored.
+
+        Returns
+        -------
+        None
+
+        """
+        path = dag_dir + "/" + self.title + ".pkl"
+        with open(path, "wb") as f:
+            pik.dump(self, f, protocol=pik.HIGHEST_PROTOCOL)
 
     def node_with_this_gene(self, gene):
         for node in self.nodes:
@@ -88,6 +119,8 @@ class Dag:
         else:
             open_image("tempo.png").show()
 
+
+
     def draw(self,
              prob_acc_thold,
              num_trials_thold,
@@ -125,3 +158,4 @@ class Dag:
         dot += "}\n"
         # print("vvbn", dot)
         Dag.draw_dot(gv.Source(dot), j_embed=jupyter)
+

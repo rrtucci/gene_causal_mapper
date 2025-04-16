@@ -3,7 +3,7 @@ import numpy as np
 from globals import *
 
 
-def create_strain_files(in_path, out_dir, del_PREDICT=True):
+def create_4_strain_files(in_path, out_dir, del_PREDICT=True):
     """
     Reads DREAM3 TSV file and writes a separate TSV file for each of the 4
     strains
@@ -24,7 +24,7 @@ def create_strain_files(in_path, out_dir, del_PREDICT=True):
 
 
 if __name__ == "__main__":
-    create_strain_files(
-        "data/DREAM3_GeneExpressionChallenge_ExpressionData_UPDATED.txt",
+    create_4_strain_files(
+        f"data/{DREAM3_DATASET}",
         "data"
     )

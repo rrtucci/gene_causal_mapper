@@ -9,6 +9,9 @@ class Arrow:
         self.num_acc = 0
         self.num_rej = 0
 
+    def ___str___(self):
+        return f"{self.start_g}->{self.end_g}"
+
     @staticmethod
     def same_start_end(ar1, ar2):
         return (ar1.start_g == ar2.start_g and
