@@ -5,19 +5,19 @@ import copy as cp
 
 
 class DagAtlas:
-    def __init__(self, cum_dag):
-        self.cum_dag = cum_dag
 
     @staticmethod
-    def extract_dag_from_two_recs(rec_name1, rec_name2):
+    def extract_dag_from_two_recs(rec_name1, rec_name2, num_genes=None):
         rec1 = TS_Record(rec_name1)
         rec2 = TS_Record(rec_name2)
 
-        rec1.read_file(f"data/{rec_name1}.tsv")
-        rec2.read_file(f"data/{rec_name2}.tsv")
+        rec1.read_file(f"data//{rec_name1}.tsv")
+        rec2.read_file(f"data//{rec_name2}.tsv")
 
         dag = Dag()
-        gene_to_bridges = TS_Record.get_gene_to_bridges(rec1, rec2)
+        gene_to_bridges = TS_Record.get_gene_to_bridges(rec1,
+                                                        rec2,
+                                                        num_genes)
         genes = gene_to_bridges.keys()
         for gene_a, gene_b in product(genes, genes):
             if gene_a != gene_b:
@@ -73,12 +73,13 @@ class DagAtlas:
         return dag
 
     @staticmethod
-    def extract_dag_from_n_recs_mem1(rec_names):
+    def extract_dag_from_n_recs_mem1(rec_names, title, num_genes=None):
         num_recs = len(rec_names)
         dags = []
         for i in range(1, num_recs):
             dag = DagAtlas.extract_dag_from_two_recs(rec_names[i - 1],
-                                                     rec_names[i])
+                                                     rec_names[i],
+                                                     num_genes)
             dags.append(dag)
         for j in range(1, num_recs - 2):
             new_dags = []
@@ -87,12 +88,20 @@ class DagAtlas:
                                                        dags[i])
                 new_dags.append(dag)
             dags, new_dags = new_dags, dags
-        return dags[0]
+            dag = dags[0]
+            dag.title = title
+        return dag
 
 
 if __name__ == "__main__":
     def main():
-        dag = DagAtlas.extract_dag_from_n_recs_mem1(STRAINS)
-        dag.draw(prob_acc_thold=.5,
-                 num_trials_thold=10,
-                 jupyter=False)
+        title = "tempo_dag"
+        num_genes = 100
+        dag = DagAtlas.extract_dag_from_n_recs_mem1(STRAINS,
+                                                    title,
+                                                    num_genes)
+        dag.save_self("data")
+        dag1 = Dag(pkl_in_path=f"data//{title}.pkl")
+        dag1.draw(prob_acc_thold=.5,
+                  num_trials_thold=10,
+                  jupyter=False)

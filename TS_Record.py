@@ -5,34 +5,96 @@ import pandas as pd
 
 
 class TS_Record:
-    def __init__(self, name, times=TIMES):
+    """
+
+    Attributes
+    ----------
+    gene_to_points: dict[str, list[Point]]
+    name: str
+    times: list[int]
+
+    """
+
+    def __init__(self,
+                 name,
+                 in_path,
+                 times=TIMES,
+                 num_genes=None):
+        """
+
+        Parameters
+        ----------
+        name: str
+        in_path: str
+        times: list[int]
+        num_genes: int
+        """
         self.name = name
         self.times = times
-        self.gene_to_points = None
+        self.gene_to_points = {}
+        self.read_file(in_path, num_genes=num_genes)
 
     def check_self(self):
+        """
+
+        Returns
+        -------
+        None
+
+        """
         assert self.gene_to_points
         for g, pts in self.gene_to_points.items():
-            assert len(pts) == len(self.times)
+            assert len(pts) == len(self.times), \
+                f"{len(pts)}!={len(self.times)}"
 
-    def read_file(self, in_path, g_range=None):
-        df = pd.read_csv(in_path, sep='\t', header=None)
-        if g_range is None:
-            g_range = range(len(df.len))
-        else:
-            g_range = range(g_range[0], g_range[1])
+    def read_file(self, in_path, num_genes=None):
+        """
 
-        for g_num in g_range:
-            self.gene_to_points[df.iloc[g_num, 0]] =\
-                df.iloc[g_num, 1:9]
+        Parameters
+        ----------
+        in_path: str
+        num_genes: int
+
+        Returns
+        -------
+        None
+
+        """
+        df = pd.read_csv(in_path, sep='\t')
+        if num_genes is None or num_genes > df.shape[0]:
+            num_genes = df.shape[0]
+        for g_num in range(num_genes):
+            gene = df.iloc[g_num, 0]
+            self.gene_to_points[gene] = []
+            for t in range(len(self.times)):
+                col = t + 1
+                x = df.iloc[g_num, col]
+                if t == 0:
+                    xdot = 0.0
+                else:
+                    delta_t = self.times[t] - self.times[t - 1]
+                    xdot = (x - df.iloc[g_num, col - 1]) / delta_t
+                self.gene_to_points[gene].append(Point(x, xdot))
+
         self.check_self()
 
     @staticmethod
     def get_gene_to_bridges(rec1, rec2):
-        assert len(rec1.gene_to_points) == len(rec2.gene_to_points)
+        """
+
+        Parameters
+        ----------
+        rec1: TS_Record
+        rec2: TS_Record
+
+        Returns
+        -------
+        dict[str, list[Bridge]]
+
+        """
         gene_to_bridges = {}
-        for g in rec1.gene_to_points.keys():
-            if g in rec2.gene_to_points.keys():
+        for g in rec1.gene_to_points:
+            if g in rec2.gene_to_points:
                 for i1, i2 in product(range(len(rec1.times)),
                                       range(len(rec2.times))):
                     t1 = rec1.times[i1]
@@ -43,3 +105,40 @@ class TS_Record:
                         bridge = Bridge(t1, pt1, t2, pt2)
                         gene_to_bridges.setdefault(g, []).append(bridge)
         return gene_to_bridges
+
+
+if __name__ == "__main__":
+    def main1():
+        rec1 = TS_Record("gat1",
+                         "data/gat1_d.tsv",
+                         num_genes=5
+                         )
+        print("rec1:")
+        print(rec1.name, rec1.times)
+        for gene in rec1.gene_to_points:
+            print(gene)
+            for i, pt in enumerate(rec1.gene_to_points[gene]):
+                print(i, pt)
+
+
+    def main2():
+        rec1 = TS_Record("gat1",
+                         "data/gat1_d.tsv",
+                         num_genes=50
+                         )
+        rec2 = TS_Record("gcn4",
+                         "data/gcn4_d.tsv",
+                         num_genes=50
+                         )
+        gene_to_bridges = \
+            TS_Record.get_gene_to_bridges(rec1, rec2)
+
+        i = 0
+        for gene in gene_to_bridges:
+            i += 1
+            print(i, gene)
+            print(Bridge.get_str(gene_to_bridges[gene]))
+
+
+    # main1()
+    main2()

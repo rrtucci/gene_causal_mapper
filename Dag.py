@@ -5,7 +5,7 @@ import graphviz as gv
 from IPython.display import display, Image
 from PIL.Image import open as open_image
 
-import pickle as pik
+import pickle as pkl
 
 
 class Dag:
@@ -13,10 +13,10 @@ class Dag:
                  arrows=None,
                  nodes=None,
                  title=None,
-                 pik_in_path=None):
-        if pik_in_path:
-            with open(pik_in_path, "rb") as f:
-                dag = pik.load(f)
+                 pkl_in_path=None):
+        if pkl_in_path:
+            with open(pkl_in_path, "rb") as f:
+                dag = pkl.load(f)
                 self.arrows = dag.arrows
                 self.nodes = dag.nodes
                 self.title = dag.title
@@ -52,7 +52,7 @@ class Dag:
         """
         path = dag_dir + "/" + self.title + ".pkl"
         with open(path, "wb") as f:
-            pik.dump(self, f, protocol=pik.HIGHEST_PROTOCOL)
+            pkl.dump(self, f, protocol=pkl.HIGHEST_PROTOCOL)
 
     def node_with_this_gene(self, gene):
         for node in self.nodes:
