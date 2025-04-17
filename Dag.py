@@ -89,7 +89,7 @@ class Dag:
         if nd1 is None:
             nd1 = Node(gene)
         if acc_bridge is not None:
-            (nd1.comp_label_to_bridges.
+            (nd1.list_name_to_bridges.
                 setdefault(name, []).append(acc_bridge))
 
     @staticmethod

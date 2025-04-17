@@ -1,4 +1,5 @@
 from Point import *
+from utils import *
 from Bridge import *
 from itertools import product
 import pandas as pd
@@ -106,6 +107,10 @@ class TS_Record:
                         gene_to_bridges.setdefault(g, []).append(bridge)
         return gene_to_bridges
 
+    def print_self(self):
+        print(self.name, self.times)
+        print_dict(self.gene_to_points)
+
 
 if __name__ == "__main__":
     def main1():
@@ -113,12 +118,7 @@ if __name__ == "__main__":
                          "data/gat1_d.tsv",
                          num_genes=5
                          )
-        print("rec1:")
-        print(rec1.name, rec1.times)
-        for gene in rec1.gene_to_points:
-            print(gene)
-            for i, pt in enumerate(rec1.gene_to_points[gene]):
-                print(i, pt)
+        rec1.print_self()
 
 
     def main2():
@@ -132,12 +132,7 @@ if __name__ == "__main__":
                          )
         gene_to_bridges = \
             TS_Record.get_gene_to_bridges(rec1, rec2)
-
-        i = 0
-        for gene in gene_to_bridges:
-            i += 1
-            print(i, gene)
-            print(Bridge.get_str(gene_to_bridges[gene]))
+        print_dict(gene_to_bridges)
 
 
     # main1()
