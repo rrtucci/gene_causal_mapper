@@ -48,15 +48,17 @@ class DagAtlas:
                 else:
                     assert False
                 dag.update_arrow(start_g, end_g, accept)
-                dag.update_node(gene_a, rec1, rec2, acc_bridge_a)
-                dag.update_node(gene_b, rec1, rec2, acc_bridge_b)
+                list_name = f"{rec1.name}&{rec2.name}"
+                dag.update_node(gene_a, list_name, acc_bridge_a)
+                dag.update_node(gene_b, list_name, acc_bridge_b)
         return dag
 
     @staticmethod
     def merge_two_dags_into_one(dag1, dag2):
         dag = cp.deepcopy(dag1)
         for node2 in dag2.nodes:
-            nd = dag.node_with_this_gene(node2.gene)
+            nd = Node.node_with_this_gene(dag.nodes,
+                                          node2.gene)
             if nd:
                 nd = Node.merge_two_nodes(nd, node2)
             else:

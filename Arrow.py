@@ -39,6 +39,21 @@ class Arrow:
         return (f"{self.start_g}->{self.end_g}"
                 f" (acc, rej)=({self.num_acc}, {self.num_rej})")
 
+    def recognize_ends(self, start_g, end_g):
+        """
+
+        Parameters
+        ----------
+        start_g: str
+        end_g: str
+
+        Returns
+        -------
+        bool
+
+        """
+        return self.start_g == start_g and self.end_g == end_g
+
     @staticmethod
     def same_start_end(ar1, ar2):
         """

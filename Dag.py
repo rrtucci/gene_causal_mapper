@@ -9,11 +9,28 @@ import pickle as pkl
 
 
 class Dag:
+    """
+    Attributes
+    ----------
+    arrows: list[Arrow]
+    nodes: list[Node]
+    title: str
+
+    """
     def __init__(self,
                  arrows=None,
                  nodes=None,
                  title=None,
                  pkl_in_path=None):
+        """
+
+        Parameters
+        ----------
+        arrows: list[Arrow]
+        nodes: list[Node]
+        title: str
+        pkl_in_path: str
+        """
         if pkl_in_path:
             with open(pkl_in_path, "rb") as f:
                 dag = pkl.load(f)
@@ -54,13 +71,48 @@ class Dag:
         with open(path, "wb") as f:
             pkl.dump(self, f, protocol=pkl.HIGHEST_PROTOCOL)
 
-    def node_with_this_gene(self, gene):
-        for node in self.nodes:
-            if node.gene == gene:
-                return node
-        return None
+    def update_node(self, gene, list_name, acc_bridge):
+        """
+
+        Parameters
+        ----------
+        gene: str
+        list_name: str
+        acc_bridge: Bridge
+
+        Returns
+        -------
+        None
+
+        """
+
+        updated = False
+        for nd in self.nodes:
+            if gene == nd.gene:
+                nd1 = nd
+                updated = True
+                break
+        if not updated:
+            nd1 = Node(gene)
+            self.nodes.append(nd1)
+        if acc_bridge:
+            (nd1.list_name_to_bridges.
+             setdefault(list_name, []).append(acc_bridge))
 
     def update_arrow(self, start_g, end_g, accept):
+        """
+
+        Parameters
+        ----------
+        start_g: str
+        end_g: str
+        accept: bool
+
+        Returns
+        -------
+        None
+
+        """
         updated = False
         for ar in self.arrows:
             if ar.recognize_ends(start_g, end_g):
@@ -77,20 +129,6 @@ class Dag:
                 ar1.accept()
             else:
                 ar1.reject()
-
-    def update_node(self, gene, rec1, rec2, acc_bridge):
-
-        name = f"{rec1.name}&{rec2.name}"
-        nd1 = None
-        for nd in self.nodes:
-            if gene == nd.gene:
-                nd1 = nd
-                break
-        if nd1 is None:
-            nd1 = Node(gene)
-        if acc_bridge is not None:
-            (nd1.list_name_to_bridges.
-                setdefault(name, []).append(acc_bridge))
 
     @staticmethod
     def draw_dot(s, j_embed):
@@ -119,8 +157,6 @@ class Dag:
         else:
             open_image("tempo.png").show()
 
-
-
     def draw(self,
              prob_acc_thold,
              num_trials_thold,
@@ -140,9 +176,8 @@ class Dag:
         None
 
         """
-        ars = self.arrows
         hprob_arrows = []
-        for ar in ars:
+        for ar in self.arrows:
             if ar.above_thresholds(prob_acc_thold,
                                    num_trials_thold):
                 hprob_arrows.append(ar)
@@ -150,8 +185,8 @@ class Dag:
         dot = "digraph {\n"
         for arrow in hprob_arrows:
             prob_acc = arrow.get_prob_acc()
-            nsam = arrow.get_num_trials()
-            X = f'{str(prob_acc)}({str(nsam)})'
+            num_trials = arrow.get_num_trials()
+            X = f'"{prob_acc:{1}.{2}}({num_trials})"'
             dot += f"{arrow.start_g}->{arrow.end_g}[label={X}];\n"
         dot += 'labelloc="b";\n'
         dot += 'label="' + self.title + '";\n'
@@ -159,3 +194,51 @@ class Dag:
         # print("vvbn", dot)
         Dag.draw_dot(gv.Source(dot), j_embed=jupyter)
 
+if __name__ == "__main__":
+    def main():
+        pt = Point(.4555555, .8999999)
+        bridge1 = Bridge(10, pt, 20, pt)
+        bridge2 = Bridge(30, pt, 40, pt)
+        bridges = [bridge1, bridge2]
+
+        list_name_to_bridges_x = {"rec_x": bridges}
+        nd_a = Node("aa",
+                    list_name_to_bridges_x)
+
+        list_name_to_bridges_y = {"rec_y": bridges}
+        nd_b = Node("bb",
+                    list_name_to_bridges_y)
+
+        list_name_to_bridges_z = {"rec_z": bridges}
+        nd_c = Node("cc",
+                    list_name_to_bridges_z)
+
+        nodes = [nd_a, nd_b, nd_c]
+
+        ar1 = Arrow("aa",
+                    "bb",
+                    num_acc=5,
+                    num_rej=12)
+        ar2 = Arrow("bb",
+                    "aa",
+                    num_acc=1,
+                    num_rej=3)
+        ar3 = Arrow("aa",
+                    "cc",
+                    num_acc=9,
+                    num_rej=7)
+
+        arrows = [ar1, ar2, ar3]
+
+        dag = Dag(arrows,
+                  nodes,
+                  title="test_dag")
+
+        dag.draw(
+            prob_acc_thold= 0.0,
+            num_trials_thold= 1,
+            jupyter=False
+        )
+
+
+    main()
