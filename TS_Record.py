@@ -61,7 +61,7 @@ class TS_Record:
         None
 
         """
-        df = pd.read_csv(in_path, sep='\t')
+        df = pd.read_csv(in_path)
         if num_genes is None or num_genes > df.shape[0]:
             num_genes = df.shape[0]
         for g_num in range(num_genes):
@@ -115,7 +115,7 @@ class TS_Record:
 if __name__ == "__main__":
     def main1():
         rec1 = TS_Record("gat1",
-                         "data/gat1_d.tsv",
+                         "data/gat1.csv",
                          num_genes=5
                          )
         rec1.print_self()
@@ -123,11 +123,11 @@ if __name__ == "__main__":
 
     def main2():
         rec1 = TS_Record("gat1",
-                         "data/gat1_d.tsv",
+                         "data/gat1.csv",
                          num_genes=50
                          )
         rec2 = TS_Record("gcn4",
-                         "data/gcn4_d.tsv",
+                         "data/gcn4.csv",
                          num_genes=50
                          )
         gene_to_bridges = \
