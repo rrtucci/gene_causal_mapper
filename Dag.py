@@ -21,7 +21,7 @@ class Dag:
                  arrows=None,
                  nodes=None,
                  title=None,
-                 pkl_in_path=None):
+                 in_path_of_pkl=None):
         """
 
         Parameters
@@ -29,10 +29,10 @@ class Dag:
         arrows: list[Arrow]
         nodes: list[Node]
         title: str
-        pkl_in_path: str
+        in_path_of_pkl: str
         """
-        if pkl_in_path:
-            with open(pkl_in_path, "rb") as f:
+        if in_path_of_pkl:
+            with open(in_path_of_pkl, "rb") as f:
                 dag = pkl.load(f)
                 self.arrows = dag.arrows
                 self.nodes = dag.nodes
@@ -194,6 +194,15 @@ class Dag:
         # print("vvbn", dot)
         Dag.draw_dot(gv.Source(dot), j_embed=jupyter)
 
+    def describe_self(self,  long_desc=True):
+        print("title=", self.title)
+        print("arrows:")
+        print_list(self.arrows)
+        print("nodes:")
+        for node in self.nodes:
+            node.describe_self(long_desc)
+
+
 if __name__ == "__main__":
     def main():
         pt = Point(.4555555, .8999999)
@@ -234,11 +243,15 @@ if __name__ == "__main__":
                   nodes,
                   title="test_dag")
 
+        dag.describe_self()
+
         dag.draw(
             prob_acc_thold= 0.0,
             num_trials_thold= 1,
             jupyter=False
         )
+
+
 
 
     main()

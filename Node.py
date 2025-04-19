@@ -31,7 +31,7 @@ class Node:
         str
 
         """
-        return f"{self.name}-node"
+        return f"{self.gene}-node"
 
     @staticmethod
     def node_with_this_gene(nodes, gene):
@@ -59,10 +59,11 @@ class Node:
                                nd2.list_name_to_bridges)
         return Node(nd1.gene, dict12)
 
-    def print_self(self):
+    def describe_self(self, long_desc=True):
         print("gene=", self.gene)
-        print("list_name_to_bridges=")
-        print_dict(self.list_name_to_bridges)
+        if long_desc:
+            print("list_name_to_bridges=")
+            print_dict(self.list_name_to_bridges)
 
 if __name__ == "__main__":
     def main():
@@ -79,15 +80,15 @@ if __name__ == "__main__":
         nd_a = Node("gg",
                     list_name_to_bridges_x)
         print("nd_a:")
-        nd_a.print_self()
+        nd_a.describe_self()
 
         list_name_to_bridges_y = {"rec_y": bridges}
         nd_b = Node("gg",
                     list_name_to_bridges_y)
         print("nd_b:")
-        nd_b.print_self()
+        nd_b.describe_self()
 
         nd_ab = Node.merge_two_nodes(nd_a, nd_b)
         print("nd_ab:")
-        nd_ab.print_self()
+        nd_ab.describe_self()
     main()

@@ -54,14 +54,11 @@ class DagAtlas:
                         start_g, end_g = genes[b], genes[a]
                         acc_bridge_a = bridge_a
                         acc_bridge_b = bridge_b
-                    elif t1a < t1b and t2a > t2b:
+                    elif (t1a < t1b and t2a > t2b) or \
+                            (t1a > t1b and t2a < t2b)  or\
+                            (t1a==t1b or t2a==t2b):
                         accept = False
                         start_g, end_g = genes[a], genes[b]
-                        acc_bridge_a = None
-                        acc_bridge_b = None
-                    elif t1a > t1b and t2a < t2b:
-                        accept = False
-                        start_g, end_g = genes[b], genes[a]
                         acc_bridge_a = None
                         acc_bridge_b = None
                     else:
@@ -128,7 +125,7 @@ class DagAtlas:
                                                      rec_names[i],
                                                      num_genes)
             dags.append(dag)
-        for j in range(1, num_recs - 2):
+        for j in range(1, num_recs-1):
             new_dags = []
             for i in range(1, num_recs - j):
                 dag = DagAtlas.merge_two_dags_into_one(dags[i - 1],
@@ -143,12 +140,15 @@ class DagAtlas:
 if __name__ == "__main__":
     def main():
         title = "tempo_dag"
-        num_genes = 100
+        num_genes = 20
         dag = DagAtlas.extract_dag_from_n_recs_mem1(STRAINS,
                                                     title,
                                                     num_genes)
+
         dag.save_self("data")
-        dag1 = Dag(pkl_in_path=f"data/{title}.pkl")
-        dag1.draw(prob_acc_thold=.5,
-                  num_trials_thold=10,
+        dag1 = Dag(in_path_of_pkl=f"data/{title}.pkl")
+        dag1.draw(prob_acc_thold=0.95,
+                  num_trials_thold=50,
                   jupyter=False)
+
+    main()

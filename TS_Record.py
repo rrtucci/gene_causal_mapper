@@ -76,6 +76,9 @@ class TS_Record:
                     delta_t = self.times[t] - self.times[t - 1]
                     xdot = (x - df.iloc[g_num, col - 1]) / delta_t
                 self.gene_to_points[gene].append(Point(x, xdot))
+            # for xdot of first point, use xdot of second point
+            self.gene_to_points[gene][0].xdot = \
+                self.gene_to_points[gene][1].xdot
 
         self.check_self()
 
@@ -107,7 +110,7 @@ class TS_Record:
                         gene_to_bridges.setdefault(g, []).append(bridge)
         return gene_to_bridges
 
-    def print_self(self):
+    def describe_self(self):
         print(self.name, self.times)
         print_dict(self.gene_to_points)
 
@@ -118,7 +121,7 @@ if __name__ == "__main__":
                          "data/gat1.csv",
                          num_genes=5
                          )
-        rec1.print_self()
+        rec1.describe_self()
 
 
     def main2():

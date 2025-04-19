@@ -111,7 +111,7 @@ class Arrow:
         None
 
         """
-        self.reject += 1
+        self.num_rej += 1
 
     def get_num_trials(self):
         """
