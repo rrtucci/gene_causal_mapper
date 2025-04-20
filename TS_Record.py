@@ -83,19 +83,22 @@ class TS_Record:
         self.check_self()
 
     @staticmethod
-    def get_gene_to_bridges(rec1, rec2):
+    def get_gene_to_bridges(rec1, rec2, verbose=True):
         """
 
         Parameters
         ----------
         rec1: TS_Record
         rec2: TS_Record
+        verbose: bool
 
         Returns
         -------
         dict[str, list[Bridge]]
 
         """
+        print("Entering TS_Record.get_gene_to_bridges() "
+              f"for rec1={rec1.name}, rec2={rec2.name}")
         gene_to_bridges = {}
         for g in rec1.gene_to_points:
             if g in rec2.gene_to_points:
@@ -108,6 +111,11 @@ class TS_Record:
                     if Point.are_sim(pt1, pt2):
                         bridge = Bridge(t1, pt1, t2, pt2)
                         gene_to_bridges.setdefault(g, []).append(bridge)
+        print("Exiting TS_Record.get_gene_to_bridges()")
+        if verbose:
+            print("gene to num of bridges=")
+            print({gene: len(gene_to_bridges[gene]) for gene in
+                   gene_to_bridges})
         return gene_to_bridges
 
     def describe_self(self):

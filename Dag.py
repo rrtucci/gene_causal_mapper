@@ -131,7 +131,7 @@ class Dag:
                 ar1.reject()
 
     @staticmethod
-    def draw_dot(s, j_embed):
+    def draw_dot(dot_str, j_embed, circo=True):
         """
         This method draws a dot string.
 
@@ -141,17 +141,25 @@ class Dag:
 
         Parameters
         ----------
-        s: output of graphviz Source(dot_str)
+        dot_str: str
         j_embed: bool
             True iff want to embed image in jupyter notebook. If you are
             using a python terminal instead of a jupyter notebook,
             only j_embed=False will draw image.
+        circo: bool
+            Whether to draw the dag with the nodes on a circle (circo=True)
+            or in topological order which is the graphviz default
+            (circo=False)
 
         Returns
         -------
         None
         """
-        x = s.render("tempo", format='png', view=False)
+        if circo:
+            src = gv.Source(dot_str, engine='circo')
+        else:
+            src = gv.Source(dot_str)
+        x = src.render("tempo", format='png', view=False)
         if j_embed:
             display(Image(x))
         else:
@@ -160,7 +168,8 @@ class Dag:
     def draw(self,
              prob_acc_thold,
              num_trials_thold,
-             jupyter=False):
+             jupyter=False,
+             circo=True):
         """
         This method draws the graph for self. Only arrows with
         `prob_acceptance` >= `prob_acc_thold` are drawn.
@@ -176,31 +185,45 @@ class Dag:
         None
 
         """
-        hprob_arrows = []
+        hprob_arrow_to_matched = {}
         for ar in self.arrows:
             if ar.above_thresholds(prob_acc_thold,
                                    num_trials_thold):
-                hprob_arrows.append(ar)
+                matched = False
+                for ar1 in hprob_arrow_to_matched:
+                    if ar1.start_g == ar.end_g and ar1.end_g == ar.start_g:
+                        matched = True
+                        break
+                hprob_arrow_to_matched[ar] = matched
 
-        dot = "digraph {\n"
-        for arrow in hprob_arrows:
+        dot_str = "digraph {\n"
+        for arrow in hprob_arrow_to_matched:
             prob_acc = arrow.get_prob_acc()
             num_trials = arrow.get_num_trials()
             X = f'"{prob_acc:{1}.{2}}({num_trials})"'
-            dot += f"{arrow.start_g}->{arrow.end_g}[label={X}];\n"
-        dot += 'labelloc="b";\n'
-        dot += 'label="' + self.title + '";\n'
-        dot += "}\n"
+            ar_c_str = ""
+            font_c_str = ""
+            if hprob_arrow_to_matched[arrow]:
+                ar_c_str = ", color=red"
+                font_c_str = ", fontcolor=red"
+            dot_str += (f"{arrow.start_g}->{arrow.end_g}[label={X}"
+                        f"{ar_c_str}{font_c_str}];\n")
+        dot_str += 'labelloc="b";\n'
+        dot_str += 'label="' + self.title + '";\n'
+        dot_str += "}\n"
         # print("vvbn", dot)
-        Dag.draw_dot(gv.Source(dot), j_embed=jupyter)
+        Dag.draw_dot(dot_str, j_embed=jupyter, circo=circo)
 
     def describe_self(self,  long_desc=True):
         print("title=", self.title)
         print("arrows:")
         print_list(self.arrows)
-        print("nodes:")
-        for node in self.nodes:
-            node.describe_self(long_desc)
+        if long_desc:
+            print("nodes:")
+            for node in self.nodes:
+                node.describe_self(long_desc)
+        else:
+            print(f"num of nodes= {len(self.nodes)}")
 
 
 if __name__ == "__main__":
@@ -243,15 +266,14 @@ if __name__ == "__main__":
                   nodes,
                   title="test_dag")
 
-        dag.describe_self()
+        dag.describe_self(long_desc=True)
 
         dag.draw(
             prob_acc_thold= 0.0,
             num_trials_thold= 1,
-            jupyter=False
+            jupyter=False,
+            circo=True
         )
-
-
 
 
     main()
