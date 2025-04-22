@@ -1,6 +1,7 @@
 from utils import *
 from Bridge import *
 
+
 class Node:
     """
     This class specifies an "autoregulon"  node. (See my book Bayesuvius for
@@ -19,6 +20,7 @@ class Node:
         create self.
 
     """
+
     def __init__(self, gene, list_name_to_bridges=None):
         """
         Constructor
@@ -85,7 +87,7 @@ class Node:
         """
         assert nd1.gene == nd2.gene
         dict12 = merge_two_dicts(nd1.list_name_to_bridges,
-                               nd2.list_name_to_bridges)
+                                 nd2.list_name_to_bridges)
         return Node(nd1.gene, dict12)
 
     def describe_self(self, long_desc=True):
@@ -108,10 +110,11 @@ class Node:
             print("list_name_to_bridges=")
             print_dict(self.list_name_to_bridges)
 
+
 if __name__ == "__main__":
     def main():
         pt = Point(.4555555, .8999999)
-        bridge1 = Bridge(10, pt,20 , pt)
+        bridge1 = Bridge(10, pt, 20, pt)
         bridge2 = Bridge(30, pt, 40, pt)
         bridges = [bridge1, bridge2]
         print("bridge1=\n", bridge1)
@@ -134,4 +137,6 @@ if __name__ == "__main__":
         nd_ab = Node.merge_two_nodes(nd_a, nd_b)
         print("nd_ab:")
         nd_ab.describe_self()
+
+
     main()

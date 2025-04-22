@@ -194,6 +194,7 @@ class Dag:
         prob_acc_thold: float
         num_trials_thold: int
         jupyter: bool
+        circo: bool
 
         Returns
         -------

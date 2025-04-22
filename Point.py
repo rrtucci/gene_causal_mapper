@@ -13,6 +13,7 @@ class Point:
         time derivative of `x` at same time as `x`
 
     """
+
     def __init__(self, x, xdot):
         """
         Constructor
@@ -62,9 +63,11 @@ class Point:
         else:
             return False
 
+
 if __name__ == "__main__":
     def main():
         pt = Point(.4555555, .8999999)
         print(pt)
+
 
     main()

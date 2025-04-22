@@ -1,4 +1,3 @@
-from turtledemo.penrose import start
 from Dag import *
 from TS_Record import *
 import copy as cp
@@ -7,7 +6,7 @@ import copy as cp
 class DagAtlas:
     """
     This class has no constructor (__init__). It's just a collection of
-    staticmethods for extracting a dag from n TS_Record's.
+    static methods for extracting a dag from n TS_Record's.
 
     """
 
@@ -72,8 +71,8 @@ class DagAtlas:
                         acc_bridge_b = bridge_b
                         # print("------------------", f"{start_g}->{end_g}")
                     elif (t1a < t1b and t2a > t2b) or \
-                            (t1a > t1b and t2a < t2b)  or\
-                            (t1a==t1b or t2a==t2b):
+                            (t1a > t1b and t2a < t2b) or \
+                            (t1a == t1b or t2a == t2b):
                         accept = False
                         start_g, end_g = genes[a], genes[b]
                         acc_bridge_a = None
@@ -162,7 +161,7 @@ class DagAtlas:
                                                      num_genes,
                                                      verbose)
             dags.append(dag)
-        for j in range(1, num_recs-1):
+        for j in range(1, num_recs - 1):
             new_dags = []
             for i in range(1, num_recs - j):
                 dag = DagAtlas.merge_two_dags_into_one(dags[i - 1],
@@ -181,7 +180,7 @@ if __name__ == "__main__":
     def main():
         title = "merging of 4 records"
         num_genes = 10
-        verbose= True
+        verbose = True
         dag = DagAtlas.extract_dag_from_n_recs_mem1(STRAINS,
                                                     title,
                                                     num_genes,
@@ -193,5 +192,6 @@ if __name__ == "__main__":
                   num_trials_thold=1,
                   jupyter=False,
                   circo=False)
+
 
     main()

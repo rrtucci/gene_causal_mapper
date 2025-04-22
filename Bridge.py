@@ -1,5 +1,3 @@
-from yaml.constructor import Constructor
-
 from Point import *
 from utils import *
 

@@ -5,6 +5,7 @@ The methods in this file are global, methods of general applicability,
 not particularly associated with any class.
 """
 
+
 def merge_two_dicts(dict1, dict2):
     """
     This method returns a dictionary obtained by merging two dictionaries
@@ -27,6 +28,7 @@ def merge_two_dicts(dict1, dict2):
     x.update(dict2)
     return x
 
+
 def print_list(list1):
     """
     This method prints a detailed inventory of the contents of list list1
@@ -41,7 +43,8 @@ def print_list(list1):
 
     """
     for i, x in enumerate(list1):
-        print(str(i+1) + ", ", x)
+        print(str(i + 1) + ", ", x)
+
 
 def print_dict(dict1):
     """
@@ -58,6 +61,5 @@ def print_dict(dict1):
 
     """
     for i, key in enumerate(dict1):
-        print(i+1, ",", key, ":")
+        print(i + 1, ",", key, ":")
         print_list(dict1[key])
-

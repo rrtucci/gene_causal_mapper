@@ -204,6 +204,7 @@ class Arrow:
         ar.num_rej += ar2.num_rej
         return ar
 
+
 if __name__ == "__main__":
     def main():
         ar1 = Arrow("start1",
@@ -219,14 +220,14 @@ if __name__ == "__main__":
                     num_acc=2,
                     num_rej=7)
         print(ar1)
-        arrows = [ar1, ar2, ar3]
         ar12 = Arrow.merge_two_arrows(ar1, ar2)
-        print("merge1,2:\n", ar1, "\n", ar2, "\n", ar12 )
+        print("merge1,2:\n", ar1, "\n", ar2, "\n", ar12)
         print("compare ar1, ar2", Arrow.same_start_end(ar1, ar2))
         print("ar1, ar2 same", Arrow.same_start_end(ar1, ar2))
         print("ar1, ar3 same", Arrow.same_start_end(ar1, ar3))
         print(Arrow.find_arrow([ar3, ar1],
                                "start1",
                                "end2"))
+
 
     main()
