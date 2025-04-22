@@ -51,9 +51,9 @@ class Node:
     @staticmethod
     def node_with_this_gene(nodes, gene):
         """
-        This method returns a Node in the node list `nodes` if a Node that
-        has the gene `gene` exists in the list. If no such Node exists,
-        the method returns None.
+        This method returns a Node in the node list `nodes` if the returned
+        Node has the gene `gene`. If no such Node exists, the method returns
+        None.
 
         Parameters
         ----------

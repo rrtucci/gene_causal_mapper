@@ -42,10 +42,10 @@ class Point:
     @staticmethod
     def are_sim(pt1, pt2):
         """
-        This method returns True iff Point's pt1 and pt2 have a small
-        distance in both their x and xdot. How close they need to be so as
-        to be considered similar (sim) is specified by the globals X_RAD and
-        XDOT_RAD (RAD stands for radius).
+        This method returns True iff Point's pt1 and pt2 are at a small
+        distance away from each other, in both, their x and xdot. How close
+        they need to be so as to be considered similar (sim) is specified by
+        the globals X_RAD and XDOT_RAD (RAD stands for radius).
 
         Parameters
         ----------

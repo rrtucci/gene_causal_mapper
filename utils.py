@@ -1,7 +1,7 @@
 import copy as cp
 
 """
-The methods in this file are global, methods of general applicability, 
+The methods in this file are global methods of general applicability, 
 not particularly associated with any class.
 """
 
@@ -31,7 +31,7 @@ def merge_two_dicts(dict1, dict2):
 
 def print_list(list1):
     """
-    This method prints a detailed inventory of the contents of list list1
+    This method prints a detailed inventory of the contents of list `list1`
 
     Parameters
     ----------
@@ -49,7 +49,7 @@ def print_list(list1):
 def print_dict(dict1):
     """
     This method prints a detailed inventory of the contents of dictionary
-    dict1.
+    `dict1`.
 
     Parameters
     ----------

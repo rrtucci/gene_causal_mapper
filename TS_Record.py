@@ -21,7 +21,7 @@ class TS_Record:
         a Point contains x and xdot. `times` is a list of times such as
         the 8 times in TIMES. `self.gene_to_points[gene]` is a list of
         Point's of the same length as the list `times`. Together,
-        these two lists give the trajectory (t, x, xdot) in phase space.
+        these two lists specify a trajectory (t, x, xdot) in phase space.
 
     """
 
@@ -42,7 +42,7 @@ class TS_Record:
         times: list[int]
         num_genes: int
             if the number of genes in file `in_path` is greater than num_genes,
-            only first `num_genes` genes are read.
+            only first `num_genes` genes (rows) of the file are read.
         """
         self.name = name
         self.times = times

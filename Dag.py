@@ -34,8 +34,8 @@ class Dag:
         nodes: list[Node]
         title: str
         in_path_of_pkl: str|None
-            path to  a pickle file that contains an instance of this class.
-            This is path is optional. If given, then `self.arrows` and
+            path to a pickle file that contains an instance of this class.
+            Providing this path is optional. If given, then `self.arrows` and
             `self.nodes` are filled with the data in the pickle file.
         """
         if in_path_of_pkl:
@@ -63,12 +63,12 @@ class Dag:
     def save_self(self, dag_dir):
         """
         This method saves self as a pickle file. The file is saved in the
-        directory `dag_dir`, with the title self.title + ".pkl"
+        directory `dag_dir`, with the name self.title + ".pkl"
 
         Parameters
         ----------
         dag_dir: str
-            Directory in which pickled file is stored.
+            Directory in which pickle file is stored.
 
         Returns
         -------
@@ -111,7 +111,7 @@ class Dag:
 
     def update_arrow(self, start_g, end_g, accept):
         """
-        This method updates the Arrow that points from gene `start_g` and to
+        This method updates the Arrow that points from gene `start_g` to
         gene `end_g` in the Dag self. The method Arrow.accept() is called if
         accept==True, whereas the method Arrow.reject() is called if
         accept==False.
@@ -187,7 +187,7 @@ class Dag:
         """
         This method draws the graph for self. Only arrows ar with
         ar.prob_acceptance > prob_acc_thold and ar.num_trials>
-        num_trials_thold and are drawn. thold=threshold
+        num_trials_thold are drawn. thold=threshold
 
         Parameters
         ----------
