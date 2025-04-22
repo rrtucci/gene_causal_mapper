@@ -3,14 +3,25 @@ from Bridge import *
 
 class Node:
     """
+    This class specifies an "autoregulon"  node. (See my book Bayesuvius for
+    more info about autoregulons)
+
+
     Attributes
     ----------
+
     gene: str
+        name of Node. Usually the name of a gene.
     list_name_to_bridges: dict[str, list[Bridge]]
+        A dictionary mapping the name of a list of Bridge's to the list of
+        Bridge's. Such list names can be anything but are usual chosen to
+        include the names of the two dags or recs that were combined to
+        create self.
 
     """
     def __init__(self, gene, list_name_to_bridges=None):
         """
+        Constructor
         
         Parameters
         ----------
@@ -25,6 +36,8 @@ class Node:
 
     def __str__(self):
         """
+        This magic method returns a string describing an instance of this
+        class any time that instance occurs in print()
         
         Returns
         -------
@@ -35,6 +48,21 @@ class Node:
 
     @staticmethod
     def node_with_this_gene(nodes, gene):
+        """
+        This method returns a Node in the node list `nodes` if a Node that
+        has the gene `gene` exists in the list. If no such Node exists,
+        the method returns None.
+
+        Parameters
+        ----------
+        nodes: list[Node]
+        gene: str
+
+        Returns
+        -------
+        Node
+
+        """
         for node in nodes:
             if node.gene == gene:
                 return node
@@ -43,6 +71,7 @@ class Node:
     @staticmethod
     def merge_two_nodes(nd1, nd2):
         """
+        This method returns a Node which merges Node's nd1 and nd2.
         
         Parameters
         ----------
@@ -60,6 +89,20 @@ class Node:
         return Node(nd1.gene, dict12)
 
     def describe_self(self, long_desc=True):
+        """
+        This method prints a description of the Dag self. It writes a long
+        description iff long_desc==True
+
+        Parameters
+        ----------
+        long_desc: bool
+            Set this to True (False) iff you want a long (short) description,
+
+        Returns
+        -------
+        None
+
+        """
         print("gene=", self.gene)
         if long_desc:
             print("list_name_to_bridges=")

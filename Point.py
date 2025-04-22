@@ -3,15 +3,19 @@ from globals import *
 
 class Point:
     """
+    This class stores a phase space point consisting of `x` and its time
+    derivative `xdot`
 
     Attributes
     ----------
     x: float
     xdot: float
+        time derivative of `x` at same time as `x`
 
     """
     def __init__(self, x, xdot):
         """
+        Constructor
 
         Parameters
         ----------
@@ -24,6 +28,8 @@ class Point:
 
     def __str__(self):
         """
+        This magic method returns a string (x, xdot) any time an instance of
+        this class occurs in print()
 
         Returns
         -------
@@ -35,6 +41,10 @@ class Point:
     @staticmethod
     def are_sim(pt1, pt2):
         """
+        This method returns True iff Point's pt1 and pt2 have a small
+        distance in both their x and xdot. How close they need to be so as
+        to be considered similar (sim) is specified by the globals X_RAD and
+        XDOT_RAD (RAD stands for radius).
 
         Parameters
         ----------

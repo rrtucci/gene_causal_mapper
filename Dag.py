@@ -10,6 +10,9 @@ import pickle as pkl
 
 class Dag:
     """
+    This class defines a DAG (Directed Acyclic Graph)
+
+
     Attributes
     ----------
     arrows: list[Arrow]
@@ -23,13 +26,17 @@ class Dag:
                  title=None,
                  in_path_of_pkl=None):
         """
+        Constructor
 
         Parameters
         ----------
         arrows: list[Arrow]
         nodes: list[Node]
         title: str
-        in_path_of_pkl: str
+        in_path_of_pkl: str|None
+            path to  a pickle file that contains an instance of this class.
+            This is path is optional. If given, then `self.arrows` and
+            `self.nodes` are filled with the data in the pickle file.
         """
         if in_path_of_pkl:
             with open(in_path_of_pkl, "rb") as f:
@@ -55,7 +62,8 @@ class Dag:
 
     def save_self(self, dag_dir):
         """
-        This method stores self as a pickled file.
+        This method saves self as a pickle file. The file is saved in the
+        directory `dag_dir`, with the title self.title + ".pkl"
 
         Parameters
         ----------
@@ -73,6 +81,8 @@ class Dag:
 
     def update_node(self, gene, list_name, acc_bridge):
         """
+        This method adds an accepted bridge `acc_bridge` to the list
+        `list_name` of bridges, in the Node named `gene`
 
         Parameters
         ----------
@@ -101,6 +111,10 @@ class Dag:
 
     def update_arrow(self, start_g, end_g, accept):
         """
+        This method updates the Arrow that points from gene `start_g` and to
+        gene `end_g` in the Dag self. The method Arrow.accept() is called if
+        accept==True, whereas the method Arrow.reject() is called if
+        accept==False.
 
         Parameters
         ----------
@@ -171,8 +185,9 @@ class Dag:
              jupyter=False,
              circo=True):
         """
-        This method draws the graph for self. Only arrows with
-        `prob_acceptance` >= `prob_acc_thold` are drawn.
+        This method draws the graph for self. Only arrows ar with
+        ar.prob_acceptance > prob_acc_thold and ar.num_trials>
+        num_trials_thold and are drawn. thold=threshold
 
         Parameters
         ----------
@@ -215,6 +230,19 @@ class Dag:
         Dag.draw_dot(dot_str, j_embed=jupyter, circo=circo)
 
     def describe_self(self,  long_desc=True):
+        """
+        This method prints a description of the Dag self. It writes a long
+        description iff long_desc==True
+
+        Parameters
+        ----------
+        long_desc; bool
+
+        Returns
+        -------
+        None
+
+        """
         print("title=", self.title)
         print("arrows:")
         print_list(self.arrows)

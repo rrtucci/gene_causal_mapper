@@ -5,7 +5,7 @@ from globals import *
 
 def create_4_strain_files(in_path, out_dir, del_PREDICT=True):
     """
-    Reads DREAM3 TSV file and writes a separate TSV file for each of the 4
+    Reads DREAM3 tsv file and writes a separate csv file for each of the 4
     strains
 
     """

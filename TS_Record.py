@@ -7,12 +7,21 @@ import pandas as pd
 
 class TS_Record:
     """
+    The main purpose of this class is to read a csv file that we call a
+    "time-series (TS) record" and to create the dictionary
+    `gene_to_bridges` that maps each gene name to a list of Bridge's.
 
     Attributes
     ----------
     gene_to_points: dict[str, list[Point]]
+        dictionary that maps each gene name to a list of Point's
     name: str
+        name of TS_Record
     times: list[int]
+        a Point contains x and xdot. `times` is a list of times such as
+        the 8 times in TIMES. `self.gene_to_points[gene]` is a list of
+        Point's of the same length as the list `times`. Together,
+        these two lists give the trajectory (t, x, xdot) in phase space.
 
     """
 
@@ -22,13 +31,18 @@ class TS_Record:
                  times=TIMES,
                  num_genes=None):
         """
+        Constructor
 
         Parameters
         ----------
         name: str
+            name of TS record.
         in_path: str
+            input path for csv
         times: list[int]
         num_genes: int
+            if the number of genes in file `in_path` is greater than num_genes,
+            only first `num_genes` genes are read.
         """
         self.name = name
         self.times = times
@@ -37,6 +51,8 @@ class TS_Record:
 
     def check_self(self):
         """
+        Do some checks. Especially, check that the two lists `self.times`
+        and `self.gene_to_points[gene]` have the same length, for all gene's.
 
         Returns
         -------
@@ -50,6 +66,8 @@ class TS_Record:
 
     def read_file(self, in_path, num_genes=None):
         """
+        This method reads the file at `in_path` and fills the dictionary
+        `self.gene_to_points`.
 
         Parameters
         ----------
@@ -85,6 +103,9 @@ class TS_Record:
     @staticmethod
     def get_gene_to_bridges(rec1, rec2, verbose=True):
         """
+        This method is given as input two TS_Record's `rec1` and `rec2`.
+        It returns the dictionary `gene_to_bridges` which maps each gene
+        name to a lists of Bridge's.
 
         Parameters
         ----------
@@ -94,7 +115,7 @@ class TS_Record:
 
         Returns
         -------
-        dict[str, list[Bridge]]
+        gene_to_bridges: dict[str, list[Bridge]]
 
         """
         print("Entering TS_Record.get_gene_to_bridges() "

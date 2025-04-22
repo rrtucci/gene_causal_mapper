@@ -5,6 +5,11 @@ import copy as cp
 
 
 class DagAtlas:
+    """
+    This class has no constructor (__init__). It's just a collection of
+    staticmethods for extracting a dag from n TS_Record's.
+
+    """
 
     @staticmethod
     def extract_dag_from_two_recs(rec_name1,
@@ -12,6 +17,11 @@ class DagAtlas:
                                   num_genes=None,
                                   verbose=True):
         """
+        This method returns a Dag which it obtains by comparing 2
+        TS_Record's called rec_name1 and rec_name2. If `num_genes` is given,
+        and that number is greater than the number of genes in rec_name1 or
+        rec_nam2, it only considers the first `num_genes` genes in both
+        records.
 
         Parameters
         ----------
@@ -82,6 +92,7 @@ class DagAtlas:
     @staticmethod
     def merge_two_dags_into_one(dag1, dag2, verbose=True):
         """
+        This method merges two Dag's dag1 and dag2 into a single one.
 
         Parameters
         ----------
@@ -126,6 +137,10 @@ class DagAtlas:
                                      num_genes=None,
                                      verbose=True):
         """
+        mem1= memory of only one past event. This method returns a Dag which
+        it derives from n TS_Record's in the list `rec_names`. The returned
+        Dag is titled `title`. When reading the TS_Records, only the first
+        `num_genes` genes are read from each record.
 
         Parameters
         ----------

@@ -1,9 +1,13 @@
+from yaml.constructor import Constructor
+
 from Point import *
 from utils import *
 
 
 class Bridge:
     """
+    This class stores a "causal bridge", specified by two Point's pt1, pt2,
+    and their respective times t1, t2.
 
     Attributes
     ----------
@@ -16,6 +20,7 @@ class Bridge:
 
     def __init__(self, t1, pt1, t2, pt2):
         """
+        Constructor
 
         Parameters
         ----------
@@ -31,6 +36,8 @@ class Bridge:
 
     def __str__(self):
         """
+        This magic method returns a string describing an instance of this
+        class any time that instance occurs in print()
 
         Returns
         -------

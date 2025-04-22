@@ -3,6 +3,12 @@ import copy as cp
 
 class Arrow:
     """
+    This class defines an arrow that points from gene `start_g` to gene
+    `end_g`. The class also stores the parameters num_acc (number accepted)
+    and num_rej ( number rejected).  An arrow is either accepted or rejected
+    when comparing two bridges
+
+
     Attributes
     ----------
     end_g: str
@@ -14,6 +20,7 @@ class Arrow:
 
     def __init__(self, start_g, end_g, num_acc=0, num_rej=0):
         """
+        Constructor
 
         Parameters
         ----------
@@ -30,6 +37,8 @@ class Arrow:
 
     def __str__(self):
         """
+        This magic method returns a string describing an instance of this
+        class any time that instance occurs in print()
 
         Returns
         -------
@@ -41,6 +50,8 @@ class Arrow:
 
     def recognize_ends(self, start_g, end_g):
         """
+        This method returns True iff self.start_g = start_g and self.end_g =
+        end_g
 
         Parameters
         ----------
@@ -57,6 +68,8 @@ class Arrow:
     @staticmethod
     def same_start_end(ar1, ar2):
         """
+        This method returns True iff ar1.start_g = ar2.start_g and ar1.end_g
+        = ar2.end_g
 
         Parameters
         ----------
@@ -74,6 +87,10 @@ class Arrow:
     @staticmethod
     def find_arrow(arrows, start_g, end_g):
         """
+        This method tries to find and Arrow from gene `start_g` to gene
+        `end_g` within the list `arrows`. If it finds one, it returns it.
+        otherwise, it returns None.
+
 
         Parameters
         ----------
@@ -95,6 +112,8 @@ class Arrow:
 
     def accept(self):
         """
+        This method increments `self.num_acc` (number of accepted arrows) by
+        one.
 
         Returns
         -------
@@ -105,6 +124,8 @@ class Arrow:
 
     def reject(self):
         """
+        This method increments `self.num_rej` (number of rejected arrows) by
+        one.
 
         Returns
         -------
@@ -115,6 +136,8 @@ class Arrow:
 
     def get_num_trials(self):
         """
+        This method returns the total number of trials (= self.num_acc +
+        self.num_rej)
 
         Returns
         -------
@@ -125,6 +148,7 @@ class Arrow:
 
     def get_prob_acc(self):
         """
+        This method returns the probability of acceptance of the self Arrow.
 
         Returns
         -------
@@ -137,6 +161,9 @@ class Arrow:
                          prob_acc_thold,
                          num_trials_thold):
         """
+        thold=threshold. This method returns True iff the `self.prob_acc()`
+        exceeds `prob_acc_thold` and `self.get_num_trials()` exceeds
+        `num_trials_thold`
 
         Parameters
         ----------
@@ -157,6 +184,8 @@ class Arrow:
     @staticmethod
     def merge_two_arrows(ar1, ar2):
         """
+        This method has two Arrow's ar1 and ar2 as input. It returns a new
+        Arrow that merges the two input Arrow's.
 
         Parameters
         ----------
@@ -177,15 +206,15 @@ class Arrow:
 
 if __name__ == "__main__":
     def main():
-        ar1 = Arrow("sta1",
+        ar1 = Arrow("start1",
                     "end1",
                     num_acc=5,
                     num_rej=12)
-        ar2 = Arrow("sta1",
+        ar2 = Arrow("start1",
                     "end1",
                     num_acc=1,
                     num_rej=3)
-        ar3 = Arrow("sta1",
+        ar3 = Arrow("start1",
                     "end2",
                     num_acc=2,
                     num_rej=7)
@@ -197,7 +226,7 @@ if __name__ == "__main__":
         print("ar1, ar2 same", Arrow.same_start_end(ar1, ar2))
         print("ar1, ar3 same", Arrow.same_start_end(ar1, ar3))
         print(Arrow.find_arrow([ar3, ar1],
-                               "sta1",
+                               "start1",
                                "end2"))
 
     main()
