@@ -213,6 +213,7 @@ class Dag:
                 hprob_arrow_to_matched[ar] = matched
 
         dot_str = "digraph {\n"
+        dot_str += "node [shape=box];\n"
         for arrow in hprob_arrow_to_matched:
             prob_acc = arrow.get_prob_acc()
             num_trials = arrow.get_num_trials()

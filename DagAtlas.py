@@ -188,8 +188,8 @@ if __name__ == "__main__":
 
         dag.save_self("data")
         dag1 = Dag(in_path_of_pkl=f"data/{title}.pkl")
-        dag1.draw(prob_acc_thold=0.79,
-                  num_trials_thold=1,
+        dag1.draw(prob_acc_thold=0.8,
+                  num_trials_thold=25,
                   jupyter=False,
                   circo=False)
 
