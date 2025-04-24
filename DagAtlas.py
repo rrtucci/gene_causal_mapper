@@ -46,11 +46,13 @@ class DagAtlas:
                          rec2_path,
                          num_genes=num_genes)
 
-        dag = Dag()
-        gene_to_bridges = TS_Record.get_gene_to_bridges(rec1, rec2, verbose)
+        gene_to_bridges = TS_Record.get_gene_to_bridges(rec1,
+                                                        rec2,
+                                                        verbose)
         genes = list(gene_to_bridges.keys())
         rg = range(len(genes))
-        list_name = f"{rec1.name}&{rec2.name}"
+        list_name = f"{rec_name1}&{rec_name2}"
+        dag = Dag(list_name)
         for a, b in product(rg, rg):
             if a < b:
                 bridges_a = gene_to_bridges[genes[a]]
@@ -82,7 +84,6 @@ class DagAtlas:
                     dag.update_arrow(start_g, end_g, accept)
                     dag.update_node(genes[a], list_name, acc_bridge_a)
                     dag.update_node(genes[b], list_name, acc_bridge_b)
-        dag.title = f"({rec_name1}&{rec_name2})"
         if verbose:
             print(f"Ending extraction of a dag "
                   f"from 2 recs: final dag= {dag.title}\n")
@@ -177,21 +178,30 @@ class DagAtlas:
 
 
 if __name__ == "__main__":
-    def main():
-        title = "merging of 4 records"
-        num_genes = 10
-        verbose = True
-        dag = DagAtlas.extract_dag_from_n_recs_mem1(STRAINS,
-                                                    title,
-                                                    num_genes,
-                                                    verbose)
 
-        dag.save_self("data")
-        dag1 = Dag(in_path_of_pkl=f"data/{title}.pkl")
-        dag1.draw(prob_acc_thold=0.8,
-                  num_trials_thold=25,
+    def main():
+        prob_acc_thold = 0.5
+        num_trials_thold = 5
+        num_genes = 20
+        title= "merging_4_records"
+        in_path_pkl = f"data/{title}.pkl"
+        caption = (f"merging of 4 records. "
+                 f"X_RAD={X_RAD}, XDOT_RAD={XDOT_RAD}, "
+                 f"prob_acc_thold={prob_acc_thold}, "
+                 f"num_trials_thold={num_trials_thold}")
+        verbose = True
+        dag = DagAtlas.extract_dag_from_n_recs_mem1(
+            STRAINS,
+            title,
+            num_genes,
+            verbose)
+
+        dag.save_self(in_path_pkl)
+        dag1 = Dag(title, in_path_of_pkl=in_path_pkl)
+        dag1.draw(prob_acc_thold,
+                  num_trials_thold,
+                  caption,
                   jupyter=False,
                   circo=False)
-
 
     main()

@@ -21,18 +21,18 @@ class Dag:
 
     """
     def __init__(self,
+                 title,
                  arrows=None,
                  nodes=None,
-                 title=None,
                  in_path_of_pkl=None):
         """
         Constructor
 
         Parameters
         ----------
+        title: str
         arrows: list[Arrow]
         nodes: list[Node]
-        title: str
         in_path_of_pkl: str|None
             path to a pickle file that contains an instance of this class.
             Providing this path is optional. If given, then `self.arrows` and
@@ -60,22 +60,19 @@ class Dag:
         else:
             self.title = title
 
-    def save_self(self, dag_dir):
+    def save_self(self, path):
         """
-        This method saves self as a pickle file. The file is saved in the
-        directory `dag_dir`, with the name self.title + ".pkl"
+        This method saves self as a pickle file. The file is saved at `path`
 
         Parameters
         ----------
-        dag_dir: str
-            Directory in which pickle file is stored.
+        path: str
 
         Returns
         -------
         None
 
         """
-        path = dag_dir + "/" + self.title + ".pkl"
         with open(path, "wb") as f:
             pkl.dump(self, f, protocol=pkl.HIGHEST_PROTOCOL)
 
@@ -182,6 +179,7 @@ class Dag:
     def draw(self,
              prob_acc_thold,
              num_trials_thold,
+             caption,
              jupyter=False,
              circo=True):
         """
@@ -193,6 +191,7 @@ class Dag:
         ----------
         prob_acc_thold: float
         num_trials_thold: int
+        caption: str
         jupyter: bool
         circo: bool
 
@@ -226,7 +225,7 @@ class Dag:
             dot_str += (f"{arrow.start_g}->{arrow.end_g}[label={X}"
                         f"{ar_c_str}{font_c_str}];\n")
         dot_str += 'labelloc="b";\n'
-        dot_str += 'label="' + self.title + '";\n'
+        dot_str += 'label="' + caption + '";\n'
         dot_str += "}\n"
         # print("vvbn", dot)
         Dag.draw_dot(dot_str, j_embed=jupyter, circo=circo)
@@ -292,15 +291,16 @@ if __name__ == "__main__":
 
         arrows = [ar1, ar2, ar3]
 
-        dag = Dag(arrows,
-                  nodes,
-                  title="test_dag")
+        dag = Dag("test_dag""test_dag",
+                arrows,
+                nodes)
 
         dag.describe_self(long_desc=True)
 
         dag.draw(
             prob_acc_thold= 0.0,
             num_trials_thold= 1,
+            caption="test",
             jupyter=False,
             circo=True
         )

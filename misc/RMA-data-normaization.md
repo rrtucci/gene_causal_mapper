@@ -1,4 +1,5 @@
 ChatGPT:
+
 In microarray data analysis, **RMA** stands for **Robust Multi-array Average**. It is a popular preprocessing method used for analyzing data from Affymetrix GeneChip arrays.
 
 RMA consists of three main steps:

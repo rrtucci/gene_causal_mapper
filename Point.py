@@ -37,7 +37,9 @@ class Point:
         str
 
         """
-        return f"({self.x:{1}.{3}}, {self.xdot:{1}.{3}})"
+        x = float(self.x)
+        xd = float(self.xdot)
+        return f"({x:{1}.{3}}, {xd:{1}.{3}})"
 
     @staticmethod
     def are_sim(pt1, pt2):

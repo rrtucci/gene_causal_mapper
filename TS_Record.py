@@ -101,7 +101,10 @@ class TS_Record:
         self.check_self()
 
     @staticmethod
-    def get_gene_to_bridges(rec1, rec2, verbose=True):
+    def get_gene_to_bridges(rec1,
+                            rec2,
+                            verbose=True,
+                            more_verbose=True):
         """
         This method is given as input two TS_Record's `rec1` and `rec2`.
         It returns the dictionary `gene_to_bridges` which maps each gene
@@ -112,6 +115,7 @@ class TS_Record:
         rec1: TS_Record
         rec2: TS_Record
         verbose: bool
+        more_verbose: bool
 
         Returns
         -------
@@ -126,9 +130,9 @@ class TS_Record:
                 for i1, i2 in product(range(len(rec1.times)),
                                       range(len(rec2.times))):
                     t1 = rec1.times[i1]
-                    t2 = rec2.times[i2]
                     pt1 = rec1.gene_to_points[g][i1]
-                    pt2 = rec1.gene_to_points[g][i2]
+                    t2 = rec2.times[i2]
+                    pt2 = rec2.gene_to_points[g][i2]
                     if Point.are_sim(pt1, pt2):
                         bridge = Bridge(t1, pt1, t2, pt2)
                         gene_to_bridges.setdefault(g, []).append(bridge)
@@ -137,6 +141,11 @@ class TS_Record:
             print("gene to num of bridges=")
             print({gene: len(gene_to_bridges[gene]) for gene in
                    gene_to_bridges})
+            if more_verbose:
+                for gene in gene_to_bridges:
+                    print(gene)
+                    print("t1(x1, xdot1)----t2(x2, xdot2)")
+                    print_list(gene_to_bridges[gene])
         return gene_to_bridges
 
     def describe_self(self):
@@ -156,16 +165,19 @@ if __name__ == "__main__":
     def main2():
         rec1 = TS_Record("gat1",
                          "data/gat1.csv",
-                         num_genes=50
+                         num_genes=10
                          )
         rec2 = TS_Record("gcn4",
                          "data/gcn4.csv",
-                         num_genes=50
+                         num_genes=10
                          )
         gene_to_bridges = \
-            TS_Record.get_gene_to_bridges(rec1, rec2)
+            TS_Record.get_gene_to_bridges(rec1,
+                                          rec2,
+                                          verbose= True,
+                                          more_verbose=True)
         print_dict(gene_to_bridges)
 
 
-    # main1()
+    main1()
     main2()
