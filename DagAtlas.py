@@ -185,7 +185,7 @@ if __name__ == "__main__":
         num_genes = 20
         title= "merging_4_records"
         in_path_pkl = f"data/{title}.pkl"
-        caption = (f"merging of 4 records. "
+        caption = (f"merging of 4 records. num_genes={num_genes}, "
                  f"X_RAD={X_RAD}, XDOT_RAD={XDOT_RAD}, "
                  f"prob_acc_thold={prob_acc_thold}, "
                  f"num_trials_thold={num_trials_thold}")
