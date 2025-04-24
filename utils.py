@@ -6,37 +6,6 @@ not particularly associated with any class.
 """
 
 
-def merge_two_dicts(dict1, dict2):
-    """
-    This method returns a dictionary obtained by merging two dictionaries
-    that have no keys in common
-
-    Parameters
-    ----------
-    dict1: dict
-    dict2: dict
-
-    Returns
-    -------
-    dict
-
-    """
-    for name in dict1.keys():
-        if name in dict2.keys():
-            # print_list(dict1[name])
-            # print_list(dict2[name])
-
-            # the two list are the same.
-            # won't check that whole thing is the same
-            # just that their length and first elements are
-            assert len(dict1[name]) == len(dict2[name])
-            assert dict1[name][0].t1 == dict2[name][0].t1
-            assert dict1[name][0].t2 == dict2[name][0].t2
-    x = cp.deepcopy(dict1)
-    x.update(dict2)
-    return x
-
-
 def print_list(list1):
     """
     This method prints a detailed inventory of the contents of list `list1`

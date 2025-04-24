@@ -86,8 +86,9 @@ class Node:
 
         """
         assert nd1.gene == nd2.gene
-        dict12 = merge_two_dicts(nd1.list_name_to_bridges,
-                                 nd2.list_name_to_bridges)
+        dict12 = Bridge.merge_two_bridges_dicts(
+            nd1.list_name_to_bridges,
+            nd2.list_name_to_bridges)
         return Node(nd1.gene, dict12)
 
     def describe_self(self, long_desc=True):

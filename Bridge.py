@@ -44,6 +44,37 @@ class Bridge:
         """
         return f"{self.t1}{self.pt1}----{self.t2}{self.pt2}"
 
+    @staticmethod
+    def merge_two_bridges_dicts(dict1, dict2):
+        """
+        This method returns a dictionary obtained by merging two dictionaries.
+        The dictionaries are name_list_to_bridges
+
+        Parameters
+        ----------
+        dict1: dict
+        dict2: dict
+
+        Returns
+        -------
+        dict
+
+        """
+        for name in dict1.keys():
+            if name in dict2.keys():
+                # print_list(dict1[name])
+                # print_list(dict2[name])
+
+                # the two list are the same.
+                # won't check that whole thing is the same
+                # just that their length and first elements are
+                assert len(dict1[name]) == len(dict2[name])
+                assert dict1[name][0].t1 == dict2[name][0].t1
+                assert dict1[name][0].t2 == dict2[name][0].t2
+        x = cp.deepcopy(dict1)
+        x.update(dict2)
+        return x
+
 
 if __name__ == "__main__":
     def main():
