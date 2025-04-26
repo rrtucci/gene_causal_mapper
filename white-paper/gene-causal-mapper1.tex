@@ -23,6 +23,9 @@ are called Gene Regulatory Networks (GRN),
 Autoregulon  Nets
 and Network Motifs 
 in the Genomics and Systems Biology literature.
+The algorithm of this paper is implemented as free open source Python software in github. There, it is applied to the DREAM3 microarray 
+dataset for yeast.
+
 \section{Introduction}
 
 This paper can be viewed
@@ -34,6 +37,11 @@ are called Gene Regulatory Networks (GRN),
 autoregulon (AR) nets
 and Network Motifs 
 in the Genomics and Systems Biology literature (Ref.\cite{alon-book}).
+
+The algorithm of this paper is implemented as free open source Python software in github
+(see Ref.\cite{gcmap}). There, it is applied to the DREAM3 microarray 
+dataset for yeast (see Ref.\cite{dream3}).
+
 
 
 The MM algorithm
@@ -170,11 +178,9 @@ Then\footnote{$x++$ means add 1 to $x$}
 \begin{array}{l}
 n_{acc}^{x\rarrow y}++
 \\
-N^{x\rarrow y}++
-\\
-	\text{Add $(t_a, t'_a, \calx(t_a))$ to a set $\XX(R_1, R_2)$.} 
+	\text{Add $\av{t_a, \calx(t_a); t'_a, \calx(t'_a)}$ to a set $\XX(R_1, R_2)$.} 
 	\\
-	\text{Add $(t_b, t'_b, \caly(t_b))$ to a set $\YY(R_1, R_2)$.}  
+	\text{Add $\av{t_b, \caly(t_b); t'_b, \caly(t'_b)}$ to a set $\YY(R_1, R_2)$.}  
 \end{array}
 \right.
 \eeq
@@ -186,11 +192,9 @@ N^{x\rarrow y}++
 \begin{array}{l}
 	n_{acc}^{y\rarrow x}++
 	\\
-	N^{y\rarrow x}++
+	\text{Add $\av{t_a, \calx(t_a); t'_a, \calx(t'_a)}$ to a set $\XX(R_1, R_2)$.} 
 	\\
-	\text{Add $(t_a, t'_a, \calx(t_a))$ to a set $\XX(R_1, R_2)$.} 
-	\\
-	\text{Add $(t_b, t'_b, \caly(t_b))$ to a set $\YY(R_1, R_2)$.}  
+	\text{Add $\av{t_b, \caly(t_b); t'_b, \caly(t'_b)}$ to a set $\YY(R_1, R_2)$.}  
 \end{array}
 \right.
 \eeq
@@ -202,7 +206,7 @@ N^{x\rarrow y}++
 \begin{array}{l}
 	n_{rej}^{x\rarrow y}++
 	\\
-	N^{x\rarrow y}++
+	n_{rej}^{y\rarrow x}++
 \end{array}
 \right.
 \eeq
@@ -212,13 +216,16 @@ N^{x\rarrow y}++
 \beq
 \left\{
 \begin{array}{l}
-	n_{rej}^{y\rarrow x}++
+	n_{rej}^{x\rarrow y}++
 	\\
-	N^{y\rarrow x}++
+	n_{rej}^{y\rarrow x}++
 \end{array}
 \right.
 \eeq
 \end {itemize}
+For symmetry, when bridges cross,
+we increase $n_{rej}$ for both 
+$x\rarrow y$ and $y\rarrow x$.
 
 \item {\bf Draw AR net}
 
@@ -297,8 +304,9 @@ Any autoregulon $\boxed{\rvx}$
 in an AR net $G$
 stores as \qt{cargo} a dictionary $\cald_X$ 
 mapping $(R_1, R_2)$ to
-$\XX(R_1, R_2)$,  where the $\XX(R_1, R_2)$ are of the form  \beq\{(t_1,t'_1,  \calx(t_1)), (t_2, t'_2, \calx(t_2)),
-(t_3, t'_3, \calx(t_3)), \ldots\}\eeq
+$\XX(R_1, R_2)$,  where the $\XX(R_1, R_2)$ are of the form  \beq
+\{\av{t_i, \calx(t_i); t'_i, \calx(t'_i)}\}_{i=1,2,3,\ldots}
+\eeq
  
 If AR nodes $\boxed{\rvx}$
 and $\boxed{\rvx'}$ are merged,
