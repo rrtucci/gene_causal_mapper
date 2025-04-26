@@ -82,6 +82,10 @@ class DagAtlas:
                     else:
                         assert False
                     dag.update_arrow(start_g, end_g, accept)
+                    if not accept:
+                        # for symmetry, when bridges cross,
+                        # increase num_rej for both a->b and b->a
+                        dag.update_arrow(end_g, start_g, accept)
                     dag.update_node(genes[a], list_name, acc_bridge_a)
                     dag.update_node(genes[b], list_name, acc_bridge_b)
         if verbose:
@@ -181,7 +185,7 @@ if __name__ == "__main__":
 
     def main():
         prob_acc_thold = 0.5
-        num_trials_thold = 5
+        num_trials_thold = 10
         num_genes = 20
         title= "merging_4_records"
         in_path_pkl = f"data/{title}.pkl"
